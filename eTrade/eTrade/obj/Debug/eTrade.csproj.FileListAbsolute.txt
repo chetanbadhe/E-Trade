@@ -1,0 +1,5 @@
+C:\Users\Chetan\Documents\GitHub\E-Trade\eTrade\eTrade\bin\eTrade.dll
+C:\Users\Chetan\Documents\GitHub\E-Trade\eTrade\eTrade\bin\eTrade.pdb
+C:\Users\Chetan\Documents\GitHub\E-Trade\eTrade\eTrade\obj\Debug\eTrade.dll
+C:\Users\Chetan\Documents\GitHub\E-Trade\eTrade\eTrade\obj\Debug\eTrade.pdb
+C:\Users\Chetan\Documents\GitHub\E-Trade\eTrade\eTrade\bin\AjaxControlToolkit.dll
