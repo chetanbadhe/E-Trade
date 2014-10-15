@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:UpdatePanel ID="upWatchListouter" runat="server">
+    <asp:UpdatePanel ID="upWatchListouter" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <table>
                 <tr>
@@ -18,9 +18,13 @@
                             ForeColor="Red" ControlToValidate="txtSymbol" ValidationGroup="Go"></asp:RequiredFieldValidator>
                     </td>
                 </tr>
-                <asp:DetailsView ID="dvWatchList" runat="server" AutoGenerateRows="true" 
-                    Height="50px" Width="125px">
-                </asp:DetailsView>
+                <tr>
+                    <td>
+                        <asp:DetailsView ID="dvWatchList" runat="server" AutoGenerateRows="true" Height="50px"
+                            Width="125px">
+                        </asp:DetailsView>
+                    </td>
+                </tr>
             </table>
         </ContentTemplate>
     </asp:UpdatePanel>

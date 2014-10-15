@@ -28,7 +28,8 @@ namespace eTrade
                 lstQuotes.Add(q);
                 dvWatchList.DataSource = lstQuotes;
                 dvWatchList.DataBind();
-
+                upWatchListouter.DataBind();
+                upWatchListouter.Update();
             }
         }
 
