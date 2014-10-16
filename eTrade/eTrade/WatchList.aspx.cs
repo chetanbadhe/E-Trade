@@ -15,6 +15,8 @@ namespace eTrade
         {
             if(!IsPostBack)
             {
+                Panel1.Visible = false;
+                Panel2.Visible = false;
             }
         }
 
@@ -33,6 +35,7 @@ namespace eTrade
                 dvStock.DataBind();
                 Panel1.Visible = true;
                 Panel2.Visible = true;
+                txtSymbol.Text = "";
             }
         }
 
@@ -50,12 +53,20 @@ namespace eTrade
 
         protected void gvWatchListSymbol_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            if (e.CommandName == "CheckChart")
-            {  
-                mp1.Show();
-            }
-            if (e.CommandName == "StockDetails")
-                mp2.Show();
+            //if (e.CommandName == "CheckChart")
+            //{
+            //    Panel2.Visible = false;
+               
+                
+            //    mp1.Show();
+            //}
+            //if (e.CommandName == "StockDetails")
+            //{
+            //    Panel1.Visible = false;
+            //    mp1.Hide();
+            //    mp2.Show();
+
+            //}
         }
 
         public string getChart(string symbols)
@@ -136,5 +147,7 @@ namespace eTrade
               "<br><br /><br />  ";
             return _innerHtml;
         }
+
+        
     }
 }
