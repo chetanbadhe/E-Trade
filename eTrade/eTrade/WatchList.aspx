@@ -20,9 +20,23 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:DetailsView ID="dvWatchList" runat="server" AutoGenerateRows="true" Height="50px"
-                            Width="125px">
-                        </asp:DetailsView>
+                    </td>
+                    <td>
+                        <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
+                        </ajaxToolkit:ToolkitScriptManager>
+                        <asp:Button ID="btnShow" runat="server" Text="Show Modal Popup" />
+                        <!-- ModalPopupExtender -->
+                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnShow"
+                            CancelControlID="btnClose" BackgroundCssClass="modalBackground">
+                        </ajaxToolkit:ModalPopupExtender>
+                        <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="display: none">
+                            <div>
+                                <asp:DetailsView ID="dvWatchList" runat="server" AutoGenerateRows="true" Height="50px"
+                                    Width="125px">
+                                </asp:DetailsView>
+                            </div>
+                            <asp:Button ID="btnClose" runat="server" Text="Close" />
+                        </asp:Panel>
                     </td>
                 </tr>
             </table>
