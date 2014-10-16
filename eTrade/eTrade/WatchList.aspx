@@ -120,6 +120,12 @@
                                             Text="Chart" />
                                     </ItemTemplate>
                                 </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnWatchListDetails" runat="server" CommandName="StockDetails" CommandArgument='<%#Eval("Symbol")%>'
+                                            Text="Details" />
+                                    </ItemTemplate>
+                                </asp:TemplateField>
                             </Columns>
                             <EditRowStyle BackColor="#999999" />
                             <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
@@ -140,11 +146,24 @@
                         <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="gvWatchListSymbol"
                             CancelControlID="btnClose" BackgroundCssClass="modalBackground">
                         </ajaxToolkit:ModalPopupExtender>
-                        <asp:Panel ID="Panel1" Visible="false" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
-                            height: 370px;">
+                        <asp:Panel ID="Panel1" Visible="false" runat="server" CssClass="modalPopup" align="center"
+                            Style="width: 600px; height: 370px;">
                             <div id="divService" runat="server">
                             </div>
                             <asp:Button ID="btnClose" runat="server" Text="Close" />
+                        </asp:Panel>
+                    </td>
+                    <td>
+                        <ajaxToolkit:ModalPopupExtender ID="mp2" runat="server" PopupControlID="Panel2"
+                            TargetControlID="gvWatchListSymbol" CancelControlID="btnDetailsClose" BackgroundCssClass="modalBackground">
+                        </ajaxToolkit:ModalPopupExtender>
+                        <asp:Panel ID="Panel2" Visible="false" runat="server" CssClass="modalPopup" align="center"
+                            Style="width: 600px; height: 370px; overflow-y: scroll;">
+                            <div id="divDetails" runat="server" style="overflow-y:scroll;">
+                                <asp:DetailsView ID="dvStock" runat="server" Height="100%" Width="100%">
+                                </asp:DetailsView>
+                            </div>
+                            <asp:Button ID="btnDetailsClose" runat="server" Text="Close" />
                         </asp:Panel>
                     </td>
                 </tr>
