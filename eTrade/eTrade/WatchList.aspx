@@ -136,11 +136,12 @@
                     <td>
                         <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
                         </ajaxToolkit:ToolkitScriptManager>
-                        <%-- <asp:Button ID="btnShow" runat="server" Text="Show Modal Popup" />--%>
-                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnWatchListSymbol"
+                        <asp:Button ID="btnWatchListSymbol" runat="server" Text="Show Modal Popup" />
+                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="gvWatchListSymbol"
                             CancelControlID="btnClose" BackgroundCssClass="modalBackground">
                         </ajaxToolkit:ModalPopupExtender>
-                        <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="display: none">
+                        <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                            height: 370px;">
                             <div id="divService" runat="server">
                             </div>
                             <asp:Button ID="btnClose" runat="server" Text="Close" />

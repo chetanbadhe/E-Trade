@@ -48,6 +48,9 @@ namespace eTrade
         {
             if (e.CommandName == "CheckChart")
             {
+                
+                mp1.Show();
+               
                 //int i = 0;
                 //string symbols = Convert.ToString(e.CommandArgument.ToString());;
                 //Random random = new Random();
@@ -158,7 +161,7 @@ namespace eTrade
               "href='javascript:changeChart(2," +
               i.ToString() + ", \"" + symbols.ToLower() +
               "\");'><span id='div3m_" + i.ToString() +
-              "'>3m</span></a>&  ";
+              "'>3m</span></a>  ";
             // 6 months
             _innerHtml +=
               "<a style='font-family: Arial, Helvetica, sans-serif; " +
