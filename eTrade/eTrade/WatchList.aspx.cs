@@ -29,6 +29,7 @@ namespace eTrade
                 gvWatchListSymbol.DataSource = lstQuotes;
                 gvWatchListSymbol.DataBind();
                 divService.InnerHtml = getChart(txtSymbol.Text);
+                Panel1.Visible = true;
             }
         }
 
