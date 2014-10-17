@@ -15,8 +15,12 @@ namespace eTrade
         {
             if(!IsPostBack)
             {
-                Panel1.Visible = false;
-                Panel2.Visible = false;
+                if (HttpContext.Current.Request.IsAuthenticated)
+                {
+                    Panel1.Visible = false;
+                    Panel2.Visible = false;
+                    btnAdd.Visible = true;
+                }
             }
         }
 
@@ -56,8 +60,6 @@ namespace eTrade
             //if (e.CommandName == "CheckChart")
             //{
             //    Panel2.Visible = false;
-               
-                
             //    mp1.Show();
             //}
             //if (e.CommandName == "StockDetails")
@@ -65,7 +67,6 @@ namespace eTrade
             //    Panel1.Visible = false;
             //    mp1.Hide();
             //    mp2.Show();
-
             //}
         }
 
@@ -148,6 +149,9 @@ namespace eTrade
             return _innerHtml;
         }
 
-        
+        protected void btnAdd_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

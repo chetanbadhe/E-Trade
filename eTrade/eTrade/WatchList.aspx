@@ -89,7 +89,7 @@
     </ajaxToolkit:ToolkitScriptManager>
     <asp:UpdatePanel ID="upWatchListouter" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
-            <table>
+            <table width="100%">
                 <tr>
                     <td>
                         <asp:TextBox ID="txtSymbol" runat="server"></asp:TextBox>
@@ -152,6 +152,11 @@
                     </td>
                 </tr>
                 <tr>
+                    <td colspan="2" align="center">
+                        <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" Visible="false" />
+                    </td>
+                </tr>
+                <tr>
                     <td>
                         <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                             height: 370px;">
@@ -169,6 +174,56 @@
                             </div>
                             <asp:Button ID="btnDetailsClose" runat="server" Text="Close" />
                         </asp:Panel>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <asp:GridView ID="gvWatchList" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                            EmptyDataText="No watch symbol!!!" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
+                            ForeColor="#333333" AllowPaging="true" OnRowCommand="gvWatchListSymbol_RowCommand">
+                            <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                            <Columns>
+                                <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
+                                <asp:BoundField DataField="Name" HeaderText="Name" ReadOnly="True" />
+                                <asp:BoundField DataField="LastTradeDate" HeaderText="Date" ReadOnly="True" />
+                                <%--<asp:BoundField DataField="LastTradeRealtimeWithTime" HeaderText="Time" ReadOnly="True" />
+                                <asp:BoundField DataField="Trade" HeaderText="Trade" ReadOnly="True" />--%>
+                                <asp:BoundField DataField="Change" HeaderText="% Change" ReadOnly="True" />
+                                <asp:BoundField DataField="Bid" HeaderText="Bid" ReadOnly="True" />
+                                <asp:BoundField DataField="Ask" HeaderText="Ask" ReadOnly="True" />
+                                <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
+                                <asp:BoundField DataField="DaysHigh" HeaderText="DaysHigh" ReadOnly="True" />
+                                <asp:BoundField DataField="DaysLow" HeaderText="DaysLow" ReadOnly="True" />
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnWatchListChart" runat="server" CommandName="CheckChart" CommandArgument='<%#Eval("Symbol")%>'
+                                            Text="Chart" />
+                                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnWatchListChart"
+                                            CancelControlID="btnClose" BackgroundCssClass="modalBackground">
+                                        </ajaxToolkit:ModalPopupExtender>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                                <asp:TemplateField>
+                                    <ItemTemplate>
+                                        <asp:Button ID="btnWatchListDetails" runat="server" CommandName="StockDetails" CommandArgument='<%#Eval("Symbol")%>'
+                                            Text="Details" />
+                                        <ajaxToolkit:ModalPopupExtender ID="mp2" runat="server" PopupControlID="Panel2" TargetControlID="btnWatchListDetails"
+                                            CancelControlID="btnDetailsClose" BackgroundCssClass="modalBackground">
+                                        </ajaxToolkit:ModalPopupExtender>
+                                    </ItemTemplate>
+                                </asp:TemplateField>
+                            </Columns>
+                            <EditRowStyle BackColor="#999999" />
+                            <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
+                            <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                            <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
+                            <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
+                            <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                            <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                            <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                            <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                            <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+                        </asp:GridView>
                     </td>
                 </tr>
             </table>
