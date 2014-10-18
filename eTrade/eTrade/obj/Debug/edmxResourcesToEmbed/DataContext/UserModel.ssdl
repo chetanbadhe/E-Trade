@@ -2,6 +2,16 @@
 <Schema Namespace="eTradeDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
   <EntityContainer Name="eTradeDbModelStoreContainer">
     <EntitySet Name="eUsers" EntityType="eTradeDbModel.Store.eUsers" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="Profile" EntityType="eTradeDbModel.Store.Profile" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="WatchList" EntityType="eTradeDbModel.Store.WatchList" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="FK_Profile_eUsers" Association="eTradeDbModel.Store.FK_Profile_eUsers">
+      <End Role="eUsers" EntitySet="eUsers" />
+      <End Role="Profile" EntitySet="Profile" />
+    </AssociationSet>
+    <AssociationSet Name="FK_WatchList_Profile" Association="eTradeDbModel.Store.FK_WatchList_Profile">
+      <End Role="Profile" EntitySet="Profile" />
+      <End Role="WatchList" EntitySet="WatchList" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="eUsers">
     <Key>
@@ -14,4 +24,48 @@
     <Property Name="RegisterDate" Type="datetime" Nullable="false" />
     <Property Name="IsActive" Type="bit" Nullable="false" />
   </EntityType>
+  <EntityType Name="Profile">
+    <Key>
+      <PropertyRef Name="ProfileID" />
+    </Key>
+    <Property Name="ProfileID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="bigint" Nullable="false" />
+    <Property Name="ProfileName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="isDefault" Type="bit" Nullable="false" />
+  </EntityType>
+  <EntityType Name="WatchList">
+    <Key>
+      <PropertyRef Name="WatchListID" />
+    </Key>
+    <Property Name="WatchListID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ProfileID" Type="bigint" Nullable="false" />
+    <Property Name="Symbol" Type="nvarchar" Nullable="false" MaxLength="10" />
+    <Property Name="WatchDate" Type="datetime" Nullable="false" />
+    <Property Name="Comment" Type="nvarchar" MaxLength="50" />
+    <Property Name="isActive" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Profile_eUsers">
+    <End Role="eUsers" Type="eTradeDbModel.Store.eUsers" Multiplicity="1" />
+    <End Role="Profile" Type="eTradeDbModel.Store.Profile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="eUsers">
+        <PropertyRef Name="UserID" />
+      </Principal>
+      <Dependent Role="Profile">
+        <PropertyRef Name="UserID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_WatchList_Profile">
+    <End Role="Profile" Type="eTradeDbModel.Store.Profile" Multiplicity="1" />
+    <End Role="WatchList" Type="eTradeDbModel.Store.WatchList" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Profile">
+        <PropertyRef Name="ProfileID" />
+      </Principal>
+      <Dependent Role="WatchList">
+        <PropertyRef Name="ProfileID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

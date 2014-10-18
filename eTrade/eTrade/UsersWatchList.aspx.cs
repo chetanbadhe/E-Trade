@@ -6,40 +6,48 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Net;
 using MarketCurrency.Classes;
+using System.Web.Security;
+using eTrade.DataContext;
+using eTrade.Classes;
 
 namespace eTrade
 {
-    public partial class WatchList : System.Web.UI.Page
+    public partial class UsersWatchList : System.Web.UI.Page
     {
+        static CommonFunctionality _userinfo;
+        static Quotes searchquote;
+        static List<Quotes> lstWatchQuotes;
         protected void Page_Load(object sender, EventArgs e)
         {
-            if(!IsPostBack)
+            if (!IsPostBack)
             {
                 if (HttpContext.Current.Request.IsAuthenticated)
                 {
                     Panel1.Visible = false;
                     Panel2.Visible = false;
-                    btnAdd.Visible = true;
+                    _userinfo = new CommonFunctionality();
+                    BindWatchList();
                 }
             }
         }
 
         protected void btnGetSymbol_Click(object sender, EventArgs e)
         {
-            Quotes q;
+            //Quotes q;
             if (txtSymbol.Text != null && txtSymbol.Text.Trim().Length != 0)
             {
-                q = getObject(txtSymbol.Text);
+                searchquote = getObject(txtSymbol.Text);
                 List<Quotes> lstQuotes = new List<Quotes>();
-                lstQuotes.Add(q);
-                gvWatchListSymbol.DataSource = lstQuotes;
-                gvWatchListSymbol.DataBind();
+                lstQuotes.Add(searchquote);
+                gvGetSymbol.DataSource = lstQuotes;
+                gvGetSymbol.DataBind();
                 divService.InnerHtml = getChart(txtSymbol.Text);
                 dvStock.DataSource = lstQuotes;
                 dvStock.DataBind();
                 Panel1.Visible = true;
                 Panel2.Visible = true;
                 txtSymbol.Text = "";
+                btnAdd.Visible = true;
             }
         }
 
@@ -55,25 +63,10 @@ namespace eTrade
             return q;
         }
 
-        protected void gvWatchListSymbol_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            //if (e.CommandName == "CheckChart")
-            //{
-            //    Panel2.Visible = false;
-            //    mp1.Show();
-            //}
-            //if (e.CommandName == "StockDetails")
-            //{
-            //    Panel1.Visible = false;
-            //    mp1.Hide();
-            //    mp2.Show();
-            //}
-        }
-
         public string getChart(string symbols)
         {
             int i = 0;
-            
+
             Random random = new Random();
             string _innerHtml = "";
             _innerHtml += "<img id='imgChart_" +
@@ -149,7 +142,53 @@ namespace eTrade
             return _innerHtml;
         }
 
+        public void BindWatchList()
+        {
+            eTradeDbEntities dbcontext = new eTradeDbEntities();
+            var lstWatchList = (from s in dbcontext.WatchLists where s.ProfileID == _userinfo._profileid && s.isActive == true select s).ToList<WatchList>();
+            lstWatchQuotes = new List<Quotes>();
+            Quotes q;
+            foreach (WatchList _w in lstWatchList)
+            {
+                q = getObject(_w.Symbol.Trim());
+                lstWatchQuotes.Add(q);
+            }
+            gvWatchListSymbol.DataSource = lstWatchQuotes;
+            gvWatchListSymbol.DataBind();
+        }
+
         protected void btnAdd_Click(object sender, EventArgs e)
+        {
+            eTradeDbEntities dbcontext = new eTradeDbEntities();
+            var isexist = (from s in dbcontext.WatchLists where s.ProfileID == _userinfo._profileid && s.isActive == true && s.Symbol == searchquote.Symbol  select s).SingleOrDefault();
+            if (isexist == null)
+            {
+                WatchList watchlist = new WatchList();
+                watchlist.Symbol = searchquote.Symbol;
+                watchlist.WatchDate = System.DateTime.Now;
+                watchlist.isActive = true;
+                watchlist.ProfileID = _userinfo._profileid;
+                dbcontext.AddToWatchLists(watchlist);
+                dbcontext.SaveChanges();
+                //var lstWatchList = (from s in dbcontext.WatchLists where s.ProfileID == _userinfo._profileid && s.isActive == true select s).ToList<WatchList>();
+                //List<Quotes> lstQuotes = new List<Quotes>();
+                //Quotes q;
+                //foreach (WatchList _w in lstWatchList)
+                //{
+                //    q = getObject(_w.Symbol.Trim());
+                //    lstQuotes.Add(q);
+                //}
+                //lstWatchQuotes.Add();
+                //gvWatchListSymbol.DataSource = lstWatchQuotes;
+                //gvWatchListSymbol.DataBind();
+                BindWatchList();
+                gvGetSymbol.DataSource = null;
+                gvGetSymbol.DataBind();
+                btnAdd.Visible = false;
+            }
+        }
+
+        protected void gvWatchListSymbol_RowCommand(object sender, GridViewCommandEventArgs e)
         {
 
         }

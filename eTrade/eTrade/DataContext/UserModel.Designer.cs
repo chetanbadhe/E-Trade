@@ -17,6 +17,13 @@ using System.Runtime.Serialization;
 using System.Xml.Serialization;
 
 [assembly: EdmSchemaAttribute()]
+#region EDM Relationship Metadata
+
+[assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_Profile_eUsers", "eUser", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.eUser), "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.Profile), true)]
+[assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_WatchList_Profile", "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.Profile), "WatchList", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.WatchList), true)]
+
+#endregion
+
 namespace eTrade.DataContext
 {
     #region Contexts
@@ -80,6 +87,38 @@ namespace eTrade.DataContext
             }
         }
         private ObjectSet<eUser> _eUsers;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Profile> Profiles
+        {
+            get
+            {
+                if ((_Profiles == null))
+                {
+                    _Profiles = base.CreateObjectSet<Profile>("Profiles");
+                }
+                return _Profiles;
+            }
+        }
+        private ObjectSet<Profile> _Profiles;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<WatchList> WatchLists
+        {
+            get
+            {
+                if ((_WatchLists == null))
+                {
+                    _WatchLists = base.CreateObjectSet<WatchList>("WatchLists");
+                }
+                return _WatchLists;
+            }
+        }
+        private ObjectSet<WatchList> _WatchLists;
 
         #endregion
 
@@ -91,6 +130,22 @@ namespace eTrade.DataContext
         public void AddToeUsers(eUser eUser)
         {
             base.AddObject("eUsers", eUser);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Profiles EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToProfiles(Profile profile)
+        {
+            base.AddObject("Profiles", profile);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the WatchLists EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToWatchLists(WatchList watchList)
+        {
+            base.AddObject("WatchLists", watchList);
         }
 
         #endregion
@@ -286,6 +341,458 @@ namespace eTrade.DataContext
         #endregion
 
     
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_Profile_eUsers", "Profile")]
+        public EntityCollection<Profile> Profiles
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Profile>("eTradeDbModel.FK_Profile_eUsers", "Profile");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Profile>("eTradeDbModel.FK_Profile_eUsers", "Profile", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="Profile")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Profile : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Profile object.
+        /// </summary>
+        /// <param name="profileID">Initial value of the ProfileID property.</param>
+        /// <param name="userID">Initial value of the UserID property.</param>
+        /// <param name="profileName">Initial value of the ProfileName property.</param>
+        /// <param name="isDefault">Initial value of the isDefault property.</param>
+        public static Profile CreateProfile(global::System.Int64 profileID, global::System.Int64 userID, global::System.String profileName, global::System.Boolean isDefault)
+        {
+            Profile profile = new Profile();
+            profile.ProfileID = profileID;
+            profile.UserID = userID;
+            profile.ProfileName = profileName;
+            profile.isDefault = isDefault;
+            return profile;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 ProfileID
+        {
+            get
+            {
+                return _ProfileID;
+            }
+            set
+            {
+                if (_ProfileID != value)
+                {
+                    OnProfileIDChanging(value);
+                    ReportPropertyChanging("ProfileID");
+                    _ProfileID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("ProfileID");
+                    OnProfileIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _ProfileID;
+        partial void OnProfileIDChanging(global::System.Int64 value);
+        partial void OnProfileIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 UserID
+        {
+            get
+            {
+                return _UserID;
+            }
+            set
+            {
+                OnUserIDChanging(value);
+                ReportPropertyChanging("UserID");
+                _UserID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UserID");
+                OnUserIDChanged();
+            }
+        }
+        private global::System.Int64 _UserID;
+        partial void OnUserIDChanging(global::System.Int64 value);
+        partial void OnUserIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String ProfileName
+        {
+            get
+            {
+                return _ProfileName;
+            }
+            set
+            {
+                OnProfileNameChanging(value);
+                ReportPropertyChanging("ProfileName");
+                _ProfileName = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("ProfileName");
+                OnProfileNameChanged();
+            }
+        }
+        private global::System.String _ProfileName;
+        partial void OnProfileNameChanging(global::System.String value);
+        partial void OnProfileNameChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean isDefault
+        {
+            get
+            {
+                return _isDefault;
+            }
+            set
+            {
+                OnisDefaultChanging(value);
+                ReportPropertyChanging("isDefault");
+                _isDefault = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("isDefault");
+                OnisDefaultChanged();
+            }
+        }
+        private global::System.Boolean _isDefault;
+        partial void OnisDefaultChanging(global::System.Boolean value);
+        partial void OnisDefaultChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_Profile_eUsers", "eUser")]
+        public eUser eUser
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<eUser>("eTradeDbModel.FK_Profile_eUsers", "eUser").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<eUser>("eTradeDbModel.FK_Profile_eUsers", "eUser").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<eUser> eUserReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<eUser>("eTradeDbModel.FK_Profile_eUsers", "eUser");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<eUser>("eTradeDbModel.FK_Profile_eUsers", "eUser", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_WatchList_Profile", "WatchList")]
+        public EntityCollection<WatchList> WatchLists
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<WatchList>("eTradeDbModel.FK_WatchList_Profile", "WatchList");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<WatchList>("eTradeDbModel.FK_WatchList_Profile", "WatchList", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="WatchList")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class WatchList : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new WatchList object.
+        /// </summary>
+        /// <param name="watchListID">Initial value of the WatchListID property.</param>
+        /// <param name="profileID">Initial value of the ProfileID property.</param>
+        /// <param name="symbol">Initial value of the Symbol property.</param>
+        /// <param name="watchDate">Initial value of the WatchDate property.</param>
+        /// <param name="isActive">Initial value of the isActive property.</param>
+        public static WatchList CreateWatchList(global::System.Int64 watchListID, global::System.Int64 profileID, global::System.String symbol, global::System.DateTime watchDate, global::System.Boolean isActive)
+        {
+            WatchList watchList = new WatchList();
+            watchList.WatchListID = watchListID;
+            watchList.ProfileID = profileID;
+            watchList.Symbol = symbol;
+            watchList.WatchDate = watchDate;
+            watchList.isActive = isActive;
+            return watchList;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 WatchListID
+        {
+            get
+            {
+                return _WatchListID;
+            }
+            set
+            {
+                if (_WatchListID != value)
+                {
+                    OnWatchListIDChanging(value);
+                    ReportPropertyChanging("WatchListID");
+                    _WatchListID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("WatchListID");
+                    OnWatchListIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _WatchListID;
+        partial void OnWatchListIDChanging(global::System.Int64 value);
+        partial void OnWatchListIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 ProfileID
+        {
+            get
+            {
+                return _ProfileID;
+            }
+            set
+            {
+                OnProfileIDChanging(value);
+                ReportPropertyChanging("ProfileID");
+                _ProfileID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileID");
+                OnProfileIDChanged();
+            }
+        }
+        private global::System.Int64 _ProfileID;
+        partial void OnProfileIDChanging(global::System.Int64 value);
+        partial void OnProfileIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Symbol
+        {
+            get
+            {
+                return _Symbol;
+            }
+            set
+            {
+                OnSymbolChanging(value);
+                ReportPropertyChanging("Symbol");
+                _Symbol = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Symbol");
+                OnSymbolChanged();
+            }
+        }
+        private global::System.String _Symbol;
+        partial void OnSymbolChanging(global::System.String value);
+        partial void OnSymbolChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime WatchDate
+        {
+            get
+            {
+                return _WatchDate;
+            }
+            set
+            {
+                OnWatchDateChanging(value);
+                ReportPropertyChanging("WatchDate");
+                _WatchDate = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("WatchDate");
+                OnWatchDateChanged();
+            }
+        }
+        private global::System.DateTime _WatchDate;
+        partial void OnWatchDateChanging(global::System.DateTime value);
+        partial void OnWatchDateChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=true)]
+        [DataMemberAttribute()]
+        public global::System.String Comment
+        {
+            get
+            {
+                return _Comment;
+            }
+            set
+            {
+                OnCommentChanging(value);
+                ReportPropertyChanging("Comment");
+                _Comment = StructuralObject.SetValidValue(value, true);
+                ReportPropertyChanged("Comment");
+                OnCommentChanged();
+            }
+        }
+        private global::System.String _Comment;
+        partial void OnCommentChanging(global::System.String value);
+        partial void OnCommentChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean isActive
+        {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                OnisActiveChanging(value);
+                ReportPropertyChanging("isActive");
+                _isActive = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("isActive");
+                OnisActiveChanged();
+            }
+        }
+        private global::System.Boolean _isActive;
+        partial void OnisActiveChanging(global::System.Boolean value);
+        partial void OnisActiveChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_WatchList_Profile", "Profile")]
+        public Profile Profile
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_WatchList_Profile", "Profile").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_WatchList_Profile", "Profile").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Profile> ProfileReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_WatchList_Profile", "Profile");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Profile>("eTradeDbModel.FK_WatchList_Profile", "Profile", value);
+                }
+            }
+        }
+
+        #endregion
+
     }
 
     #endregion

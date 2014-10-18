@@ -37,7 +37,24 @@ namespace eTrade.Account
                 dbcontext.AddToeUsers(user);
                 dbcontext.SaveChanges();
 
-                string userData = user.UserName + "|" + user.IsActive + "|" + user.UserID + "|" + user.EmailID;
+                Profile profile1 = new Profile();
+                Profile profile2 = new Profile();
+                Profile profile3 = new Profile();
+                profile1.ProfileName = "Profile1";
+                profile1.UserID = user.UserID;
+                profile1.isDefault = true;
+                profile2.ProfileName = "Profile2";
+                profile2.UserID = user.UserID;
+                profile2.isDefault = false;
+                profile3.ProfileName = "Profile3";
+                profile3.UserID = user.UserID;
+                profile3.isDefault = false;
+                dbcontext.AddToProfiles(profile1);
+                dbcontext.AddToProfiles(profile2);
+                dbcontext.AddToProfiles(profile3);
+                dbcontext.SaveChanges();
+
+                string userData = user.UserName + "|" + user.IsActive + "|" + user.UserID + "|" + user.EmailID + "|" + profile1.ProfileID;
                 HttpCookie authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
                 FormsAuthenticationTicket newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration, ticket.IsPersistent, userData);

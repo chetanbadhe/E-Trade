@@ -24,8 +24,10 @@ namespace eTrade.Account
             var user = (from p in dbcontext.eUsers where p.UserName == LoginUser.UserName.Trim() && p.Password == LoginUser.Password.Trim() select p).SingleOrDefault();
             if (user != null)
             {
+
+                var pdefault = (from p in dbcontext.Profiles where p.UserID == user.UserID && p.isDefault == true select p).Single();
                 //FormsAuthentication.SetAuthCookie(euser.UserName.Trim(), false /* createPersistentCookie */);
-                string userData = user.UserName + "|" + user.IsActive + "|" + user.UserID + "|" + user.EmailID;
+                string userData = user.UserName + "|" + user.IsActive + "|" + user.UserID + "|" + user.EmailID + "|" + pdefault.ProfileID;
                 HttpCookie authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
                 FormsAuthenticationTicket newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration, ticket.IsPersistent, userData);

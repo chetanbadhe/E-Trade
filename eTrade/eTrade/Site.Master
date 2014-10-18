@@ -14,7 +14,7 @@
         <div class="header">
             <div class="title">
                 <h1>
-                    My ASP.NET Application
+                    e-Trade
                 </h1>
             </div>
             <div class="loginDisplay">
@@ -39,6 +39,13 @@
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home" />
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Finance">
+                        <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Watch List" />
+                        </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Account">
+                            <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Change Password" />
+                            <asp:MenuItem NavigateUrl="~/Profiles.aspx" Text="Profiles" />
+                        </asp:MenuItem>
                     </Items>
                 </asp:Menu>
             </div>

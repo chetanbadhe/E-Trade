@@ -4,9 +4,19 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="eTradeDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+    <Schema Namespace="eTradeDbModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
         <EntityContainer Name="eTradeDbModelStoreContainer">
           <EntitySet Name="eUsers" EntityType="eTradeDbModel.Store.eUsers" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Profile" EntityType="eTradeDbModel.Store.Profile" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="WatchList" EntityType="eTradeDbModel.Store.WatchList" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Profile_eUsers" Association="eTradeDbModel.Store.FK_Profile_eUsers">
+            <End Role="eUsers" EntitySet="eUsers" />
+            <End Role="Profile" EntitySet="Profile" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WatchList_Profile" Association="eTradeDbModel.Store.FK_WatchList_Profile">
+            <End Role="Profile" EntitySet="Profile" />
+            <End Role="WatchList" EntitySet="WatchList" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="eUsers">
           <Key>
@@ -19,14 +29,67 @@
           <Property Name="RegisterDate" Type="datetime" Nullable="false" />
           <Property Name="IsActive" Type="bit" Nullable="false" />
         </EntityType>
-      </Schema>
-    </edmx:StorageModels>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileID" />
+          </Key>
+          <Property Name="ProfileID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ProfileName" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="isDefault" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="WatchList">
+          <Key>
+            <PropertyRef Name="WatchListID" />
+          </Key>
+          <Property Name="WatchListID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="ProfileID" Type="bigint" Nullable="false" />
+          <Property Name="Symbol" Type="nvarchar" Nullable="false" MaxLength="10" />
+          <Property Name="WatchDate" Type="datetime" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar" MaxLength="50" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Profile_eUsers">
+          <End Role="eUsers" Type="eTradeDbModel.Store.eUsers" Multiplicity="1" />
+          <End Role="Profile" Type="eTradeDbModel.Store.Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="eUsers">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WatchList_Profile">
+          <End Role="Profile" Type="eTradeDbModel.Store.Profile" Multiplicity="1" />
+          <End Role="WatchList" Type="eTradeDbModel.Store.WatchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profile">
+              <PropertyRef Name="ProfileID" />
+            </Principal>
+            <Dependent Role="WatchList">
+              <PropertyRef Name="ProfileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="eTradeDbModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
         <EntityContainer Name="eTradeDbEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="eUsers" EntityType="eTradeDbModel.eUser" />
-        </EntityContainer>
+          <EntitySet Name="Profiles" EntityType="eTradeDbModel.Profile" />
+          <EntitySet Name="WatchLists" EntityType="eTradeDbModel.WatchList" />
+          <AssociationSet Name="FK_Profile_eUsers" Association="eTradeDbModel.FK_Profile_eUsers">
+            <End Role="eUser" EntitySet="eUsers" />
+            <End Role="Profile" EntitySet="Profiles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_WatchList_Profile" Association="eTradeDbModel.FK_WatchList_Profile">
+            <End Role="Profile" EntitySet="Profiles" />
+            <End Role="WatchList" EntitySet="WatchLists" />
+          </AssociationSet>
+          </EntityContainer>
         <EntityType Name="eUser">
           <Key>
             <PropertyRef Name="UserID" />
@@ -37,8 +100,56 @@
           <Property Name="EmailID" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
           <Property Name="RegisterDate" Type="DateTime" Nullable="false" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Profiles" Relationship="eTradeDbModel.FK_Profile_eUsers" FromRole="eUser" ToRole="Profile" />
         </EntityType>
-      </Schema>
+        <EntityType Name="Profile">
+          <Key>
+            <PropertyRef Name="ProfileID" />
+          </Key>
+          <Property Type="Int64" Name="ProfileID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="UserID" Nullable="false" />
+          <Property Type="String" Name="ProfileName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="isDefault" Nullable="false" />
+          <NavigationProperty Name="eUser" Relationship="eTradeDbModel.FK_Profile_eUsers" FromRole="Profile" ToRole="eUser" />
+          <NavigationProperty Name="WatchLists" Relationship="eTradeDbModel.FK_WatchList_Profile" FromRole="Profile" ToRole="WatchList" />
+        </EntityType>
+        <EntityType Name="WatchList">
+          <Key>
+            <PropertyRef Name="WatchListID" />
+          </Key>
+          <Property Type="Int64" Name="WatchListID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int64" Name="ProfileID" Nullable="false" />
+          <Property Type="String" Name="Symbol" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="WatchDate" Nullable="false" />
+          <Property Type="String" Name="Comment" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="isActive" Nullable="false" />
+          <NavigationProperty Name="Profile" Relationship="eTradeDbModel.FK_WatchList_Profile" FromRole="WatchList" ToRole="Profile" />
+        </EntityType>
+        <Association Name="FK_Profile_eUsers">
+          <End Type="eTradeDbModel.eUser" Role="eUser" Multiplicity="1" />
+          <End Type="eTradeDbModel.Profile" Role="Profile" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="eUser">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Profile">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_WatchList_Profile">
+          <End Type="eTradeDbModel.Profile" Role="Profile" Multiplicity="1" />
+          <End Type="eTradeDbModel.WatchList" Role="WatchList" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Profile">
+              <PropertyRef Name="ProfileID" />
+            </Principal>
+            <Dependent Role="WatchList">
+              <PropertyRef Name="ProfileID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -53,6 +164,28 @@
                 <ScalarProperty Name="EmailID" ColumnName="EmailID" />
                 <ScalarProperty Name="RegisterDate" ColumnName="RegisterDate" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Profiles">
+            <EntityTypeMapping TypeName="eTradeDbModel.Profile">
+              <MappingFragment StoreEntitySet="Profile">
+                <ScalarProperty Name="isDefault" ColumnName="isDefault" />
+                <ScalarProperty Name="ProfileName" ColumnName="ProfileName" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="WatchLists">
+            <EntityTypeMapping TypeName="eTradeDbModel.WatchList">
+              <MappingFragment StoreEntitySet="WatchList">
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="WatchDate" ColumnName="WatchDate" />
+                <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+                <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+                <ScalarProperty Name="WatchListID" ColumnName="WatchListID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -77,8 +210,20 @@
     <!-- Diagram content (shape and connector positions) -->
     <Diagrams>
       <Diagram Name="UserModel">
-        <EntityTypeShape EntityType="eTradeDbModel.eUser" Width="1.5" PointX="0.75" PointY="0.75" Height="2.172587890625" IsExpanded="true" />
-      </Diagram>
+        <EntityTypeShape EntityType="eTradeDbModel.eUser" Width="1.5" PointX="0.5" PointY="3.875" Height="2.364889322916667" IsExpanded="true" />
+        <EntityTypeShape EntityType="eTradeDbModel.Profile" Width="1.5" PointX="3" PointY="0.875" Height="2.1725878906249996" />
+        <EntityTypeShape EntityType="eTradeDbModel.WatchList" Width="1.5" PointX="6.875" PointY="3.625" Height="2.3648893229166656" />
+        <AssociationConnector Association="eTradeDbModel.FK_Profile_eUsers" >
+          <ConnectorPoint PointX="1.25" PointY="3.875" />
+          <ConnectorPoint PointX="1.25" PointY="1.9612939453124998" />
+          <ConnectorPoint PointX="3" PointY="1.9612939453124998" />
+        </AssociationConnector>
+        <AssociationConnector Association="eTradeDbModel.FK_WatchList_Profile" >
+          <ConnectorPoint PointX="4.5" PointY="1.9612939453124998" />
+          <ConnectorPoint PointX="7.625" PointY="1.9612939453124998" />
+          <ConnectorPoint PointX="7.625" PointY="3.625" />
+        </AssociationConnector>
+        </Diagram>
     </Diagrams>
   </Designer>
 </edmx:Edmx>

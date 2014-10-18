@@ -10,7 +10,7 @@
 namespace eTrade {
     
     
-    public partial class WatchList {
+    public partial class UsersWatchList {
         
         /// <summary>
         /// ToolkitScriptManager1 control.
@@ -58,13 +58,13 @@ namespace eTrade {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rftxtSymbol;
         
         /// <summary>
-        /// gvWatchListSymbol control.
+        /// gvGetSymbol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvWatchListSymbol;
+        protected global::System.Web.UI.WebControls.GridView gvGetSymbol;
         
         /// <summary>
         /// btnAdd control.
@@ -139,12 +139,12 @@ namespace eTrade {
         protected global::System.Web.UI.WebControls.Button btnDetailsClose;
         
         /// <summary>
-        /// gvWatchList control.
+        /// gvWatchListSymbol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvWatchList;
+        protected global::System.Web.UI.WebControls.GridView gvWatchListSymbol;
     }
 }

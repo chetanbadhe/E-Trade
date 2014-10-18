@@ -69,13 +69,14 @@
     <Content Include="Account\ChangePasswordSuccess.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Register.aspx" />
+    <Content Include="Profiles.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
-    <Content Include="WatchList.aspx" />
+    <Content Include="UsersWatchList.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -120,6 +121,7 @@
     <Compile Include="Account\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Classes\CommonFunctionality.cs" />
     <Compile Include="Classes\Quotes.cs" />
     <Compile Include="Classes\YahooFinance.cs" />
     <Compile Include="DataContext\UserModel.Designer.cs">
@@ -137,6 +139,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Profiles.aspx.cs">
+      <DependentUpon>Profiles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Profiles.aspx.designer.cs">
+      <DependentUpon>Profiles.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Site.Master.cs">
       <DependentUpon>Site.Master</DependentUpon>
@@ -145,12 +154,12 @@
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
     </Compile>
-    <Compile Include="WatchList.aspx.cs">
-      <DependentUpon>WatchList.aspx</DependentUpon>
+    <Compile Include="UsersWatchList.aspx.cs">
+      <DependentUpon>UsersWatchList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="WatchList.aspx.designer.cs">
-      <DependentUpon>WatchList.aspx</DependentUpon>
+    <Compile Include="UsersWatchList.aspx.designer.cs">
+      <DependentUpon>UsersWatchList.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

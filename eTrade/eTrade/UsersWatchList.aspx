@@ -1,5 +1,5 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="WatchList.aspx.cs" Inherits="eTrade.WatchList" %>
+    CodeBehind="UsersWatchList.aspx.cs" Inherits="eTrade.UsersWatchList" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <script type="text/javascript" language="JavaScript">
@@ -103,9 +103,9 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:GridView ID="gvWatchListSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                        <asp:GridView ID="gvGetSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
                             EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
-                            ForeColor="#333333" AllowPaging="true" OnRowCommand="gvWatchListSymbol_RowCommand">
+                            ForeColor="#333333" AllowPaging="true">
                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                             <Columns>
                                 <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
@@ -178,11 +178,12 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:GridView ID="gvWatchList" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
-                            EmptyDataText="No watch symbol!!!" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
-                            ForeColor="#333333" AllowPaging="true" OnRowCommand="gvWatchListSymbol_RowCommand">
+                        <asp:GridView ID="gvWatchListSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                            EmptyDataText="No watch symbol!!!" ViewStateMode="Enabled" CellPadding="4" GridLines="Both"
+                            Width="100%" ForeColor="#333333" AllowPaging="true" OnRowCommand="gvWatchListSymbol_RowCommand">
                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                             <Columns>
+                                <asp:CommandField ShowSelectButton="True" ShowDeleteButton="True" />
                                 <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
                                 <asp:BoundField DataField="Name" HeaderText="Name" ReadOnly="True" />
                                 <asp:BoundField DataField="LastTradeDate" HeaderText="Date" ReadOnly="True" />
@@ -196,18 +197,18 @@
                                 <asp:BoundField DataField="DaysLow" HeaderText="DaysLow" ReadOnly="True" />
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnWatchListChart" runat="server" CommandName="CheckChart" CommandArgument='<%#Eval("Symbol")%>'
-                                            Text="Chart" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnWatchListChart"
+                                        <asp:Button ID="gvWatchListbtnWatchListChart" runat="server" CommandName="CheckChart"
+                                            CommandArgument='<%#Eval("Symbol")%>' Text="Chart" />
+                                        <ajaxToolkit:ModalPopupExtender ID="mp3" runat="server" PopupControlID="Panel1" TargetControlID="gvWatchListbtnWatchListChart"
                                             CancelControlID="btnClose" BackgroundCssClass="modalBackground">
                                         </ajaxToolkit:ModalPopupExtender>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnWatchListDetails" runat="server" CommandName="StockDetails" CommandArgument='<%#Eval("Symbol")%>'
-                                            Text="Details" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mp2" runat="server" PopupControlID="Panel2" TargetControlID="btnWatchListDetails"
+                                        <asp:Button ID="gvWatchListbtnWatchListDetails" runat="server" CommandName="StockDetails"
+                                            CommandArgument='<%#Eval("Symbol")%>' Text="Details" />
+                                        <ajaxToolkit:ModalPopupExtender ID="mp4" runat="server" PopupControlID="Panel2" TargetControlID="gvWatchListbtnWatchListDetails"
                                             CancelControlID="btnDetailsClose" BackgroundCssClass="modalBackground">
                                         </ajaxToolkit:ModalPopupExtender>
                                     </ItemTemplate>
