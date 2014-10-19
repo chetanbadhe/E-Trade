@@ -76,6 +76,7 @@
     <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.4.1.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="UserPortfolio.aspx" />
     <Content Include="UsersWatchList.aspx" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -153,6 +154,13 @@
     </Compile>
     <Compile Include="Site.Master.designer.cs">
       <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserPortfolio.aspx.cs">
+      <DependentUpon>UserPortfolio.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserPortfolio.aspx.designer.cs">
+      <DependentUpon>UserPortfolio.aspx</DependentUpon>
     </Compile>
     <Compile Include="UsersWatchList.aspx.cs">
       <DependentUpon>UsersWatchList.aspx</DependentUpon>

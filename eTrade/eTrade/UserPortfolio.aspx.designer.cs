@@ -10,7 +10,7 @@
 namespace eTrade {
     
     
-    public partial class UsersWatchList {
+    public partial class UserPortfolio {
         
         /// <summary>
         /// ToolkitScriptManager1 control.
@@ -22,13 +22,13 @@ namespace eTrade {
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
         
         /// <summary>
-        /// upWatchListouter control.
+        /// upPortfolioouter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upWatchListouter;
+        protected global::System.Web.UI.UpdatePanel upPortfolioouter;
         
         /// <summary>
         /// txtSymbol control.
@@ -76,13 +76,13 @@ namespace eTrade {
         protected global::System.Web.UI.WebControls.GridView gvGetSymbol;
         
         /// <summary>
-        /// btnAdd control.
+        /// btnBuy control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnAdd;
+        protected global::System.Web.UI.WebControls.Button btnBuy;
         
         /// <summary>
         /// btnDelete control.
@@ -164,14 +164,5 @@ namespace eTrade {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Button btnDetailsClose;
-        
-        /// <summary>
-        /// gvWatchListSymbol control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvWatchListSymbol;
     }
 }

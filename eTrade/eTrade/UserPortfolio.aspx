@@ -1,84 +1,84 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true"
-    CodeBehind="UsersWatchList.aspx.cs" Inherits="eTrade.UsersWatchList" %>
+    CodeBehind="UserPortfolio.aspx.cs" Inherits="eTrade.UserPortfolio" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <script type="text/javascript" language="JavaScript">
-        /// <summary>
-        /// The function will be called when user
-        // changes the chart type to another type.
-        /// </summary>
-        /// <param name="type">Chart type.</param>
-        /// <param name="num">Stock number.</param>
-        /// <param name="symbol">Stock symobl.</param>     
-        function changeChart(type, num, symbol) {
-            // All the DIVs are inside the main DIV
-            // and defined in the code-behind class.
-            var div1d = document.getElementById("div1d_" + num);
-            var div5d = document.getElementById("div5d_" + num);
-            var div3m = document.getElementById("div3m_" + num);
-            var div6m = document.getElementById("div6m_" + num);
-            var div1y = document.getElementById("div1y_" + num);
-            var div2y = document.getElementById("div2y_" + num);
-            var div5y = document.getElementById("div5y_" + num);
-            var divMax = document.getElementById("divMax_" + num);
-            var divChart = document.getElementById("imgChart_" + num);
-            // Set innerHTML property.
-            div1d.innerHTML = "1d";
-            div5d.innerHTML = "5d";
-            div3m.innerHTML = "3m";
-            div6m.innerHTML = "6m";
-            div1y.innerHTML = "1y";
-            div2y.innerHTML = "2y";
-            div5y.innerHTML = "5y";
-            divMax.innerHTML = "Max";
-            // Use a random number to defeat cache.
-            var rand_no = Math.random();
-            rand_no = rand_no * 100000000;
-            //  Display the stock chart.
-            switch (type) {
-                case 1: // 5 days
-                    div5d.innerHTML = "<b>5d</b>";
-                    divChart.src = "http://ichart.finance.yahoo.com/w?s=" +
+ <script type="text/javascript" language="JavaScript">
+     /// <summary>
+     /// The function will be called when user
+     // changes the chart type to another type.
+     /// </summary>
+     /// <param name="type">Chart type.</param>
+     /// <param name="num">Stock number.</param>
+     /// <param name="symbol">Stock symobl.</param>     
+     function changeChart(type, num, symbol) {
+         // All the DIVs are inside the main DIV
+         // and defined in the code-behind class.
+         var div1d = document.getElementById("div1d_" + num);
+         var div5d = document.getElementById("div5d_" + num);
+         var div3m = document.getElementById("div3m_" + num);
+         var div6m = document.getElementById("div6m_" + num);
+         var div1y = document.getElementById("div1y_" + num);
+         var div2y = document.getElementById("div2y_" + num);
+         var div5y = document.getElementById("div5y_" + num);
+         var divMax = document.getElementById("divMax_" + num);
+         var divChart = document.getElementById("imgChart_" + num);
+         // Set innerHTML property.
+         div1d.innerHTML = "1d";
+         div5d.innerHTML = "5d";
+         div3m.innerHTML = "3m";
+         div6m.innerHTML = "6m";
+         div1y.innerHTML = "1y";
+         div2y.innerHTML = "2y";
+         div5y.innerHTML = "5y";
+         divMax.innerHTML = "Max";
+         // Use a random number to defeat cache.
+         var rand_no = Math.random();
+         rand_no = rand_no * 100000000;
+         //  Display the stock chart.
+         switch (type) {
+             case 1: // 5 days
+                 div5d.innerHTML = "<b>5d</b>";
+                 divChart.src = "http://ichart.finance.yahoo.com/w?s=" +
                            symbol + "&" + rand_no;
-                    break;
-                case 2: // 3 months
-                    div3m.innerHTML = "<b>3m</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/3m/" +
+                 break;
+             case 2: // 3 months
+                 div3m.innerHTML = "<b>3m</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/3m/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 3: // 6 months 
-                    div6m.innerHTML = "<b>6m</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/6m/" +
+                 break;
+             case 3: // 6 months 
+                 div6m.innerHTML = "<b>6m</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/6m/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 4: // 1 year
-                    div1y.innerHTML = "<b>1y</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/1y/" +
+                 break;
+             case 4: // 1 year
+                 div1y.innerHTML = "<b>1y</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/1y/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 5: // 2 years
-                    div2y.innerHTML = "<b>2y</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/2y/" +
+                 break;
+             case 5: // 2 years
+                 div2y.innerHTML = "<b>2y</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/2y/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 6: // 5 years
-                    div5y.innerHTML = "<b>5y</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/5y/" +
+                 break;
+             case 6: // 5 years
+                 div5y.innerHTML = "<b>5y</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/5y/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 7: // Max
-                    divMax.innerHTML = "<b>msx</b>";
-                    divChart.src = "http://chart.finance.yahoo.com/c/my/" +
+                 break;
+             case 7: // Max
+                 divMax.innerHTML = "<b>msx</b>";
+                 divChart.src = "http://chart.finance.yahoo.com/c/my/" +
                            symbol + "?" + rand_no;
-                    break;
-                case 0: // 1 day
-                default:
-                    div1d.innerHTML = "<b>1d</b>";
-                    divChart.src = "http://ichart.finance.yahoo.com/b?s=" +
+                 break;
+             case 0: // 1 day
+             default:
+                 div1d.innerHTML = "<b>1d</b>";
+                 divChart.src = "http://ichart.finance.yahoo.com/b?s=" +
                            symbol + "&" + rand_no;
-                    break;
-            }
-        }
+                 break;
+         }
+     }
 
        
 
@@ -87,7 +87,7 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
     </ajaxToolkit:ToolkitScriptManager>
-    <asp:UpdatePanel ID="upWatchListouter" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="upPortfolioouter" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <table width="100%">
                 <tr>
@@ -152,7 +152,7 @@
                 </tr>
                 <tr>
                     <td align="center">
-                        <asp:Button ID="btnAdd" runat="server" Text="Add" OnClick="btnAdd_Click" Visible="false" />
+                        <asp:Button ID="btnBuy" runat="server" Text="Buy" OnClick="btnBuy_Click" Visible="false" />
                     </td>
                     <td align="center">
                         <asp:Button ID="btnDelete" runat="server" Text="Delete" OnClick="btnDelete_Click"
@@ -178,41 +178,6 @@
                             </div>
                             <asp:Button ID="btnDetailsClose" runat="server" Text="Close" />
                         </asp:Panel>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <asp:GridView ID="gvWatchListSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
-                            EmptyDataText="No watch symbol!!!" ViewStateMode="Enabled" CellPadding="4" GridLines="Both"
-                            Width="100%" ForeColor="#333333" AllowPaging="true" OnRowCommand="gvWatchListSymbol_RowCommand">
-                            <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                            <Columns>
-                                <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
-                                <asp:BoundField DataField="Name" HeaderText="Name" ReadOnly="True" />
-                                <asp:BoundField DataField="LastTradeDate" HeaderText="Date" ReadOnly="True" />
-                                <asp:BoundField DataField="Change" HeaderText="% Change" ReadOnly="True" />
-                                <asp:BoundField DataField="Bid" HeaderText="Bid" ReadOnly="True" />
-                                <asp:BoundField DataField="Ask" HeaderText="Ask" ReadOnly="True" />
-                                <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
-                                <asp:BoundField DataField="DaysHigh" HeaderText="DaysHigh" ReadOnly="True" />
-                                <asp:BoundField DataField="DaysLow" HeaderText="DaysLow" ReadOnly="True" />
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:LinkButton ID="gvlnkWatchListChart" runat="server" CommandName="Select" CommandArgument='<%#Eval("Symbol")%>'>Select</asp:LinkButton>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                            <EditRowStyle BackColor="#999999" />
-                            <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
-                            <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                            <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
-                            <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
-                            <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                            <SortedAscendingCellStyle BackColor="#E9E7E2" />
-                            <SortedAscendingHeaderStyle BackColor="#506C8C" />
-                            <SortedDescendingCellStyle BackColor="#FFFDF8" />
-                            <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
-                        </asp:GridView>
                     </td>
                 </tr>
             </table>

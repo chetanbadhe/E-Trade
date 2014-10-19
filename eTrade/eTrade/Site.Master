@@ -40,7 +40,8 @@
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home" />
                         <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
                         <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Finance">
-                        <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Watch List" />
+                            <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Watch List" />
+                            <asp:MenuItem NavigateUrl="~/UserPortfolio.aspx" Text="Portfolio" />
                         </asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Account">
                             <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Change Password" />
