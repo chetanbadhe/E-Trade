@@ -21,6 +21,9 @@ using System.Xml.Serialization;
 
 [assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_Profile_eUsers", "eUser", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.eUser), "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.Profile), true)]
 [assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_WatchList_Profile", "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.Profile), "WatchList", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.WatchList), true)]
+[assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_BuyOrders_Portfolio", "Portfolio", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.Portfolio), "BuyOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.BuyOrder), true)]
+[assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_Portfolio_Profile", "Profile", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.Profile), "Portfolio", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.Portfolio), true)]
+[assembly: EdmRelationshipAttribute("eTradeDbModel", "FK_SellOrders_Portfolio", "Portfolio", System.Data.Metadata.Edm.RelationshipMultiplicity.One, typeof(eTrade.DataContext.Portfolio), "SellOrder", System.Data.Metadata.Edm.RelationshipMultiplicity.Many, typeof(eTrade.DataContext.SellOrder), true)]
 
 #endregion
 
@@ -119,6 +122,54 @@ namespace eTrade.DataContext
             }
         }
         private ObjectSet<WatchList> _WatchLists;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<BuyOrder> BuyOrders
+        {
+            get
+            {
+                if ((_BuyOrders == null))
+                {
+                    _BuyOrders = base.CreateObjectSet<BuyOrder>("BuyOrders");
+                }
+                return _BuyOrders;
+            }
+        }
+        private ObjectSet<BuyOrder> _BuyOrders;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<Portfolio> Portfolios
+        {
+            get
+            {
+                if ((_Portfolios == null))
+                {
+                    _Portfolios = base.CreateObjectSet<Portfolio>("Portfolios");
+                }
+                return _Portfolios;
+            }
+        }
+        private ObjectSet<Portfolio> _Portfolios;
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        public ObjectSet<SellOrder> SellOrders
+        {
+            get
+            {
+                if ((_SellOrders == null))
+                {
+                    _SellOrders = base.CreateObjectSet<SellOrder>("SellOrders");
+                }
+                return _SellOrders;
+            }
+        }
+        private ObjectSet<SellOrder> _SellOrders;
 
         #endregion
 
@@ -147,6 +198,30 @@ namespace eTrade.DataContext
         {
             base.AddObject("WatchLists", watchList);
         }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the BuyOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToBuyOrders(BuyOrder buyOrder)
+        {
+            base.AddObject("BuyOrders", buyOrder);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the Portfolios EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToPortfolios(Portfolio portfolio)
+        {
+            base.AddObject("Portfolios", portfolio);
+        }
+    
+        /// <summary>
+        /// Deprecated Method for adding a new object to the SellOrders EntitySet. Consider using the .Add method of the associated ObjectSet&lt;T&gt; property instead.
+        /// </summary>
+        public void AddToSellOrders(SellOrder sellOrder)
+        {
+            base.AddObject("SellOrders", sellOrder);
+        }
 
         #endregion
 
@@ -155,6 +230,209 @@ namespace eTrade.DataContext
     #endregion
 
     #region Entities
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="BuyOrder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class BuyOrder : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new BuyOrder object.
+        /// </summary>
+        /// <param name="buyID">Initial value of the BuyID property.</param>
+        /// <param name="portfolioID">Initial value of the PortfolioID property.</param>
+        /// <param name="volume">Initial value of the Volume property.</param>
+        /// <param name="unitPrice">Initial value of the UnitPrice property.</param>
+        /// <param name="dateofPurchase">Initial value of the DateofPurchase property.</param>
+        public static BuyOrder CreateBuyOrder(global::System.Int64 buyID, global::System.Int64 portfolioID, global::System.Decimal volume, global::System.Decimal unitPrice, global::System.DateTime dateofPurchase)
+        {
+            BuyOrder buyOrder = new BuyOrder();
+            buyOrder.BuyID = buyID;
+            buyOrder.PortfolioID = portfolioID;
+            buyOrder.Volume = volume;
+            buyOrder.UnitPrice = unitPrice;
+            buyOrder.DateofPurchase = dateofPurchase;
+            return buyOrder;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 BuyID
+        {
+            get
+            {
+                return _BuyID;
+            }
+            set
+            {
+                if (_BuyID != value)
+                {
+                    OnBuyIDChanging(value);
+                    ReportPropertyChanging("BuyID");
+                    _BuyID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("BuyID");
+                    OnBuyIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _BuyID;
+        partial void OnBuyIDChanging(global::System.Int64 value);
+        partial void OnBuyIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 PortfolioID
+        {
+            get
+            {
+                return _PortfolioID;
+            }
+            set
+            {
+                OnPortfolioIDChanging(value);
+                ReportPropertyChanging("PortfolioID");
+                _PortfolioID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PortfolioID");
+                OnPortfolioIDChanged();
+            }
+        }
+        private global::System.Int64 _PortfolioID;
+        partial void OnPortfolioIDChanging(global::System.Int64 value);
+        partial void OnPortfolioIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Volume
+        {
+            get
+            {
+                return _Volume;
+            }
+            set
+            {
+                OnVolumeChanging(value);
+                ReportPropertyChanging("Volume");
+                _Volume = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Volume");
+                OnVolumeChanged();
+            }
+        }
+        private global::System.Decimal _Volume;
+        partial void OnVolumeChanging(global::System.Decimal value);
+        partial void OnVolumeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal UnitPrice
+        {
+            get
+            {
+                return _UnitPrice;
+            }
+            set
+            {
+                OnUnitPriceChanging(value);
+                ReportPropertyChanging("UnitPrice");
+                _UnitPrice = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UnitPrice");
+                OnUnitPriceChanged();
+            }
+        }
+        private global::System.Decimal _UnitPrice;
+        partial void OnUnitPriceChanging(global::System.Decimal value);
+        partial void OnUnitPriceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DateofPurchase
+        {
+            get
+            {
+                return _DateofPurchase;
+            }
+            set
+            {
+                OnDateofPurchaseChanging(value);
+                ReportPropertyChanging("DateofPurchase");
+                _DateofPurchase = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateofPurchase");
+                OnDateofPurchaseChanged();
+            }
+        }
+        private global::System.DateTime _DateofPurchase;
+        partial void OnDateofPurchaseChanging(global::System.DateTime value);
+        partial void OnDateofPurchaseChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_BuyOrders_Portfolio", "Portfolio")]
+        public Portfolio Portfolio
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_BuyOrders_Portfolio", "Portfolio").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_BuyOrders_Portfolio", "Portfolio").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Portfolio> PortfolioReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_BuyOrders_Portfolio", "Portfolio");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Portfolio>("eTradeDbModel.FK_BuyOrders_Portfolio", "Portfolio", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
     
     /// <summary>
     /// No Metadata Documentation available.
@@ -372,6 +650,279 @@ namespace eTrade.DataContext
     /// <summary>
     /// No Metadata Documentation available.
     /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="Portfolio")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class Portfolio : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new Portfolio object.
+        /// </summary>
+        /// <param name="portfolioID">Initial value of the PortfolioID property.</param>
+        /// <param name="profileID">Initial value of the ProfileID property.</param>
+        /// <param name="symbol">Initial value of the Symbol property.</param>
+        /// <param name="totalVolumes">Initial value of the TotalVolumes property.</param>
+        /// <param name="isActive">Initial value of the isActive property.</param>
+        /// <param name="profit">Initial value of the Profit property.</param>
+        public static Portfolio CreatePortfolio(global::System.Int64 portfolioID, global::System.Int64 profileID, global::System.String symbol, global::System.Decimal totalVolumes, global::System.Boolean isActive, global::System.Decimal profit)
+        {
+            Portfolio portfolio = new Portfolio();
+            portfolio.PortfolioID = portfolioID;
+            portfolio.ProfileID = profileID;
+            portfolio.Symbol = symbol;
+            portfolio.TotalVolumes = totalVolumes;
+            portfolio.isActive = isActive;
+            portfolio.Profit = profit;
+            return portfolio;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 PortfolioID
+        {
+            get
+            {
+                return _PortfolioID;
+            }
+            set
+            {
+                if (_PortfolioID != value)
+                {
+                    OnPortfolioIDChanging(value);
+                    ReportPropertyChanging("PortfolioID");
+                    _PortfolioID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("PortfolioID");
+                    OnPortfolioIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _PortfolioID;
+        partial void OnPortfolioIDChanging(global::System.Int64 value);
+        partial void OnPortfolioIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 ProfileID
+        {
+            get
+            {
+                return _ProfileID;
+            }
+            set
+            {
+                OnProfileIDChanging(value);
+                ReportPropertyChanging("ProfileID");
+                _ProfileID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("ProfileID");
+                OnProfileIDChanged();
+            }
+        }
+        private global::System.Int64 _ProfileID;
+        partial void OnProfileIDChanging(global::System.Int64 value);
+        partial void OnProfileIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.String Symbol
+        {
+            get
+            {
+                return _Symbol;
+            }
+            set
+            {
+                OnSymbolChanging(value);
+                ReportPropertyChanging("Symbol");
+                _Symbol = StructuralObject.SetValidValue(value, false);
+                ReportPropertyChanged("Symbol");
+                OnSymbolChanged();
+            }
+        }
+        private global::System.String _Symbol;
+        partial void OnSymbolChanging(global::System.String value);
+        partial void OnSymbolChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal TotalVolumes
+        {
+            get
+            {
+                return _TotalVolumes;
+            }
+            set
+            {
+                OnTotalVolumesChanging(value);
+                ReportPropertyChanging("TotalVolumes");
+                _TotalVolumes = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("TotalVolumes");
+                OnTotalVolumesChanged();
+            }
+        }
+        private global::System.Decimal _TotalVolumes;
+        partial void OnTotalVolumesChanging(global::System.Decimal value);
+        partial void OnTotalVolumesChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Boolean isActive
+        {
+            get
+            {
+                return _isActive;
+            }
+            set
+            {
+                OnisActiveChanging(value);
+                ReportPropertyChanging("isActive");
+                _isActive = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("isActive");
+                OnisActiveChanged();
+            }
+        }
+        private global::System.Boolean _isActive;
+        partial void OnisActiveChanging(global::System.Boolean value);
+        partial void OnisActiveChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Profit
+        {
+            get
+            {
+                return _Profit;
+            }
+            set
+            {
+                OnProfitChanging(value);
+                ReportPropertyChanging("Profit");
+                _Profit = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Profit");
+                OnProfitChanged();
+            }
+        }
+        private global::System.Decimal _Profit;
+        partial void OnProfitChanging(global::System.Decimal value);
+        partial void OnProfitChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_BuyOrders_Portfolio", "BuyOrder")]
+        public EntityCollection<BuyOrder> BuyOrders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<BuyOrder>("eTradeDbModel.FK_BuyOrders_Portfolio", "BuyOrder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<BuyOrder>("eTradeDbModel.FK_BuyOrders_Portfolio", "BuyOrder", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_Portfolio_Profile", "Profile")]
+        public Profile Profile
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_Portfolio_Profile", "Profile").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_Portfolio_Profile", "Profile").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Profile> ProfileReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Profile>("eTradeDbModel.FK_Portfolio_Profile", "Profile");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Profile>("eTradeDbModel.FK_Portfolio_Profile", "Profile", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_SellOrders_Portfolio", "SellOrder")]
+        public EntityCollection<SellOrder> SellOrders
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<SellOrder>("eTradeDbModel.FK_SellOrders_Portfolio", "SellOrder");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<SellOrder>("eTradeDbModel.FK_SellOrders_Portfolio", "SellOrder", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
     [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="Profile")]
     [Serializable()]
     [DataContractAttribute(IsReference=true)]
@@ -560,6 +1111,231 @@ namespace eTrade.DataContext
                 if ((value != null))
                 {
                     ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<WatchList>("eTradeDbModel.FK_WatchList_Profile", "WatchList", value);
+                }
+            }
+        }
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_Portfolio_Profile", "Portfolio")]
+        public EntityCollection<Portfolio> Portfolios
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedCollection<Portfolio>("eTradeDbModel.FK_Portfolio_Profile", "Portfolio");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedCollection<Portfolio>("eTradeDbModel.FK_Portfolio_Profile", "Portfolio", value);
+                }
+            }
+        }
+
+        #endregion
+
+    }
+    
+    /// <summary>
+    /// No Metadata Documentation available.
+    /// </summary>
+    [EdmEntityTypeAttribute(NamespaceName="eTradeDbModel", Name="SellOrder")]
+    [Serializable()]
+    [DataContractAttribute(IsReference=true)]
+    public partial class SellOrder : EntityObject
+    {
+        #region Factory Method
+    
+        /// <summary>
+        /// Create a new SellOrder object.
+        /// </summary>
+        /// <param name="sellID">Initial value of the SellID property.</param>
+        /// <param name="portfolioID">Initial value of the PortfolioID property.</param>
+        /// <param name="volume">Initial value of the Volume property.</param>
+        /// <param name="unitPrice">Initial value of the UnitPrice property.</param>
+        /// <param name="dateofSell">Initial value of the DateofSell property.</param>
+        public static SellOrder CreateSellOrder(global::System.Int64 sellID, global::System.Int64 portfolioID, global::System.Decimal volume, global::System.Decimal unitPrice, global::System.DateTime dateofSell)
+        {
+            SellOrder sellOrder = new SellOrder();
+            sellOrder.SellID = sellID;
+            sellOrder.PortfolioID = portfolioID;
+            sellOrder.Volume = volume;
+            sellOrder.UnitPrice = unitPrice;
+            sellOrder.DateofSell = dateofSell;
+            return sellOrder;
+        }
+
+        #endregion
+
+        #region Primitive Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=true, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 SellID
+        {
+            get
+            {
+                return _SellID;
+            }
+            set
+            {
+                if (_SellID != value)
+                {
+                    OnSellIDChanging(value);
+                    ReportPropertyChanging("SellID");
+                    _SellID = StructuralObject.SetValidValue(value);
+                    ReportPropertyChanged("SellID");
+                    OnSellIDChanged();
+                }
+            }
+        }
+        private global::System.Int64 _SellID;
+        partial void OnSellIDChanging(global::System.Int64 value);
+        partial void OnSellIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Int64 PortfolioID
+        {
+            get
+            {
+                return _PortfolioID;
+            }
+            set
+            {
+                OnPortfolioIDChanging(value);
+                ReportPropertyChanging("PortfolioID");
+                _PortfolioID = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("PortfolioID");
+                OnPortfolioIDChanged();
+            }
+        }
+        private global::System.Int64 _PortfolioID;
+        partial void OnPortfolioIDChanging(global::System.Int64 value);
+        partial void OnPortfolioIDChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal Volume
+        {
+            get
+            {
+                return _Volume;
+            }
+            set
+            {
+                OnVolumeChanging(value);
+                ReportPropertyChanging("Volume");
+                _Volume = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("Volume");
+                OnVolumeChanged();
+            }
+        }
+        private global::System.Decimal _Volume;
+        partial void OnVolumeChanging(global::System.Decimal value);
+        partial void OnVolumeChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.Decimal UnitPrice
+        {
+            get
+            {
+                return _UnitPrice;
+            }
+            set
+            {
+                OnUnitPriceChanging(value);
+                ReportPropertyChanging("UnitPrice");
+                _UnitPrice = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("UnitPrice");
+                OnUnitPriceChanged();
+            }
+        }
+        private global::System.Decimal _UnitPrice;
+        partial void OnUnitPriceChanging(global::System.Decimal value);
+        partial void OnUnitPriceChanged();
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [EdmScalarPropertyAttribute(EntityKeyProperty=false, IsNullable=false)]
+        [DataMemberAttribute()]
+        public global::System.DateTime DateofSell
+        {
+            get
+            {
+                return _DateofSell;
+            }
+            set
+            {
+                OnDateofSellChanging(value);
+                ReportPropertyChanging("DateofSell");
+                _DateofSell = StructuralObject.SetValidValue(value);
+                ReportPropertyChanged("DateofSell");
+                OnDateofSellChanged();
+            }
+        }
+        private global::System.DateTime _DateofSell;
+        partial void OnDateofSellChanging(global::System.DateTime value);
+        partial void OnDateofSellChanged();
+
+        #endregion
+
+    
+        #region Navigation Properties
+    
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [XmlIgnoreAttribute()]
+        [SoapIgnoreAttribute()]
+        [DataMemberAttribute()]
+        [EdmRelationshipNavigationPropertyAttribute("eTradeDbModel", "FK_SellOrders_Portfolio", "Portfolio")]
+        public Portfolio Portfolio
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_SellOrders_Portfolio", "Portfolio").Value;
+            }
+            set
+            {
+                ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_SellOrders_Portfolio", "Portfolio").Value = value;
+            }
+        }
+        /// <summary>
+        /// No Metadata Documentation available.
+        /// </summary>
+        [BrowsableAttribute(false)]
+        [DataMemberAttribute()]
+        public EntityReference<Portfolio> PortfolioReference
+        {
+            get
+            {
+                return ((IEntityWithRelationships)this).RelationshipManager.GetRelatedReference<Portfolio>("eTradeDbModel.FK_SellOrders_Portfolio", "Portfolio");
+            }
+            set
+            {
+                if ((value != null))
+                {
+                    ((IEntityWithRelationships)this).RelationshipManager.InitializeRelatedReference<Portfolio>("eTradeDbModel.FK_SellOrders_Portfolio", "Portfolio", value);
                 }
             }
         }

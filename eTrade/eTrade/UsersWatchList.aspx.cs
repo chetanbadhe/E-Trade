@@ -27,8 +27,6 @@ namespace eTrade
                 {
                     Panel1.Visible = false;
                     Panel2.Visible = false;
-                    //Panel3.Visible = false;
-                    //Panel4.Visible = false;
                     _userinfo = new CommonFunctionality();
                     gvGetSymbol.DataSource = lstQuotes;
                     gvGetSymbol.DataBind();

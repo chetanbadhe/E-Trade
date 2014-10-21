@@ -35,5 +35,39 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="BuyOrders">
+      <EntityTypeMapping TypeName="eTradeDbModel.BuyOrder">
+        <MappingFragment StoreEntitySet="BuyOrders">
+          <ScalarProperty Name="DateofPurchase" ColumnName="DateofPurchase" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="PortfolioID" ColumnName="PortfolioID" />
+          <ScalarProperty Name="BuyID" ColumnName="BuyID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Portfolios">
+      <EntityTypeMapping TypeName="eTradeDbModel.Portfolio">
+        <MappingFragment StoreEntitySet="Portfolio">
+          <ScalarProperty Name="Profit" ColumnName="Profit" />
+          <ScalarProperty Name="isActive" ColumnName="isActive" />
+          <ScalarProperty Name="TotalVolumes" ColumnName="TotalVolumes" />
+          <ScalarProperty Name="Symbol" ColumnName="Symbol" />
+          <ScalarProperty Name="ProfileID" ColumnName="ProfileID" />
+          <ScalarProperty Name="PortfolioID" ColumnName="PortfolioID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="SellOrders">
+      <EntityTypeMapping TypeName="eTradeDbModel.SellOrder">
+        <MappingFragment StoreEntitySet="SellOrders">
+          <ScalarProperty Name="DateofSell" ColumnName="DateofSell" />
+          <ScalarProperty Name="UnitPrice" ColumnName="UnitPrice" />
+          <ScalarProperty Name="Volume" ColumnName="Volume" />
+          <ScalarProperty Name="PortfolioID" ColumnName="PortfolioID" />
+          <ScalarProperty Name="SellID" ColumnName="SellID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

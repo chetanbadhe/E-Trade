@@ -12,6 +12,21 @@
       <End Role="Profile" EntitySet="Profiles" />
       <End Role="WatchList" EntitySet="WatchLists" />
     </AssociationSet>
+    <EntitySet Name="BuyOrders" EntityType="eTradeDbModel.BuyOrder" />
+    <EntitySet Name="Portfolios" EntityType="eTradeDbModel.Portfolio" />
+    <EntitySet Name="SellOrders" EntityType="eTradeDbModel.SellOrder" />
+    <AssociationSet Name="FK_BuyOrders_Portfolio" Association="eTradeDbModel.FK_BuyOrders_Portfolio">
+      <End Role="Portfolio" EntitySet="Portfolios" />
+      <End Role="BuyOrder" EntitySet="BuyOrders" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Portfolio_Profile" Association="eTradeDbModel.FK_Portfolio_Profile">
+      <End Role="Profile" EntitySet="Profiles" />
+      <End Role="Portfolio" EntitySet="Portfolios" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SellOrders_Portfolio" Association="eTradeDbModel.FK_SellOrders_Portfolio">
+      <End Role="Portfolio" EntitySet="Portfolios" />
+      <End Role="SellOrder" EntitySet="SellOrders" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="eUser">
     <Key>
@@ -35,6 +50,7 @@
     <Property Type="Boolean" Name="isDefault" Nullable="false" />
     <NavigationProperty Name="eUser" Relationship="eTradeDbModel.FK_Profile_eUsers" FromRole="Profile" ToRole="eUser" />
     <NavigationProperty Name="WatchLists" Relationship="eTradeDbModel.FK_WatchList_Profile" FromRole="Profile" ToRole="WatchList" />
+    <NavigationProperty Name="Portfolios" Relationship="eTradeDbModel.FK_Portfolio_Profile" FromRole="Profile" ToRole="Portfolio" />
   </EntityType>
   <EntityType Name="WatchList">
     <Key>
@@ -69,6 +85,78 @@
       </Principal>
       <Dependent Role="WatchList">
         <PropertyRef Name="ProfileID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="BuyOrder">
+    <Key>
+      <PropertyRef Name="BuyID" />
+    </Key>
+    <Property Type="Int64" Name="BuyID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int64" Name="PortfolioID" Nullable="false" />
+    <Property Type="Decimal" Name="Volume" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="DateTime" Name="DateofPurchase" Nullable="false" />
+    <NavigationProperty Name="Portfolio" Relationship="eTradeDbModel.FK_BuyOrders_Portfolio" FromRole="BuyOrder" ToRole="Portfolio" />
+  </EntityType>
+  <EntityType Name="Portfolio">
+    <Key>
+      <PropertyRef Name="PortfolioID" />
+    </Key>
+    <Property Type="Int64" Name="PortfolioID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int64" Name="ProfileID" Nullable="false" />
+    <Property Type="String" Name="Symbol" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+    <Property Type="Decimal" Name="TotalVolumes" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="Boolean" Name="isActive" Nullable="false" />
+    <Property Type="Decimal" Name="Profit" Nullable="false" Precision="18" Scale="0" />
+    <NavigationProperty Name="BuyOrders" Relationship="eTradeDbModel.FK_BuyOrders_Portfolio" FromRole="Portfolio" ToRole="BuyOrder" />
+    <NavigationProperty Name="Profile" Relationship="eTradeDbModel.FK_Portfolio_Profile" FromRole="Portfolio" ToRole="Profile" />
+    <NavigationProperty Name="SellOrders" Relationship="eTradeDbModel.FK_SellOrders_Portfolio" FromRole="Portfolio" ToRole="SellOrder" />
+  </EntityType>
+  <EntityType Name="SellOrder">
+    <Key>
+      <PropertyRef Name="SellID" />
+    </Key>
+    <Property Type="Int64" Name="SellID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int64" Name="PortfolioID" Nullable="false" />
+    <Property Type="Decimal" Name="Volume" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="Decimal" Name="UnitPrice" Nullable="false" Precision="18" Scale="0" />
+    <Property Type="DateTime" Name="DateofSell" Nullable="false" />
+    <NavigationProperty Name="Portfolio" Relationship="eTradeDbModel.FK_SellOrders_Portfolio" FromRole="SellOrder" ToRole="Portfolio" />
+  </EntityType>
+  <Association Name="FK_BuyOrders_Portfolio">
+    <End Type="eTradeDbModel.Portfolio" Role="Portfolio" Multiplicity="1" />
+    <End Type="eTradeDbModel.BuyOrder" Role="BuyOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Portfolio">
+        <PropertyRef Name="PortfolioID" />
+      </Principal>
+      <Dependent Role="BuyOrder">
+        <PropertyRef Name="PortfolioID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Portfolio_Profile">
+    <End Type="eTradeDbModel.Profile" Role="Profile" Multiplicity="1" />
+    <End Type="eTradeDbModel.Portfolio" Role="Portfolio" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Profile">
+        <PropertyRef Name="ProfileID" />
+      </Principal>
+      <Dependent Role="Portfolio">
+        <PropertyRef Name="ProfileID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SellOrders_Portfolio">
+    <End Type="eTradeDbModel.Portfolio" Role="Portfolio" Multiplicity="1" />
+    <End Type="eTradeDbModel.SellOrder" Role="SellOrder" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Portfolio">
+        <PropertyRef Name="PortfolioID" />
+      </Principal>
+      <Dependent Role="SellOrder">
+        <PropertyRef Name="PortfolioID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
