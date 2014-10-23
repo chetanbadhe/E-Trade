@@ -26,20 +26,23 @@ namespace eTrade.Account
             {
 
                 var pdefault = (from p in dbcontext.Profiles where p.UserID == user.UserID && p.isDefault == true select p).Single();
-                //FormsAuthentication.SetAuthCookie(euser.UserName.Trim(), false /* createPersistentCookie */);
+                FormsAuthentication.SetAuthCookie(user.UserName.Trim(), false /* createPersistentCookie */);
                 string userData = user.UserName + "|" + user.IsActive + "|" + user.UserID + "|" + user.EmailID + "|" + pdefault.ProfileID;
                 HttpCookie authCookie = FormsAuthentication.GetAuthCookie(user.UserName, false);
                 FormsAuthenticationTicket ticket = FormsAuthentication.Decrypt(authCookie.Value);
                 FormsAuthenticationTicket newTicket = new FormsAuthenticationTicket(ticket.Version, ticket.Name, ticket.IssueDate, ticket.Expiration, ticket.IsPersistent, userData);
                 authCookie.Value = FormsAuthentication.Encrypt(newTicket);
                 Response.Cookies.Add(authCookie);
-
+                Session["user"] = user;
+                Session["profileid"] = pdefault.ProfileID;
+                Session["username"] = user.UserName;
                 string continueUrl = ViewState["ContinueDestinationPageUrl"].ToString();
                 if (String.IsNullOrEmpty(continueUrl))
                 {
                     continueUrl = "~/";
                 }
-                Response.Redirect(continueUrl);
+                //Response.Redirect(continueUrl);
+                FormsAuthentication.RedirectFromLoginPage(Session["username"].ToString(), true, continueUrl);
             }
             else
             {

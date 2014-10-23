@@ -8,6 +8,7 @@ using System.Net;
 
 namespace eTrade.Classes
 {
+    [Serializable]
     public class PortfolioManager
     {
         public Int64 portfolioID {get;set;}
@@ -53,7 +54,7 @@ namespace eTrade.Classes
                     pmgr.avgprice = buyTotalPrice / buyVolumetotal;
                     pmgr.change = pmgr.livePrice - pmgr.avgprice;
                     pmgr.remainingvolume = buyVolumetotal - sellVolumetotal;
-                    pmgr.profit =  (pmgr.remainingvolume * pmgr.livePrice) + buyTotalPrice - (sellTotalPrice); 
+                    pmgr.profit =  (pmgr.remainingvolume * pmgr.livePrice) - buyTotalPrice + (sellTotalPrice); 
                     pmlist.Add(pmgr);
                 }
                 return pmlist;

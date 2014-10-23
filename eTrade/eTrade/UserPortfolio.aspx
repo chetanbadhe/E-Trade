@@ -79,15 +79,12 @@
                     break;
             }
         }
-
-       
-
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
     </ajaxToolkit:ToolkitScriptManager>
-    <asp:UpdatePanel ID="upPortfolioouter" runat="server" UpdateMode="Conditional">
+    <asp:UpdatePanel ID="upWatchListouter" runat="server" UpdateMode="Conditional">
         <ContentTemplate>
             <table width="100%">
                 <tr>
@@ -104,7 +101,7 @@
                 </tr>
                 <tr>
                     <td colspan="2">
-                        <asp:GridView ID="gvSearchSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                        <asp:GridView ID="gvGetSymbol" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
                             EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
                             ForeColor="#333333" AllowPaging="true">
                             <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
@@ -120,21 +117,19 @@
                                 <asp:BoundField DataField="DaysLow" HeaderText="DaysLow" ReadOnly="True" />
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnPortfolioChart" runat="server" CommandName="CheckChart" CommandArgument='<%#Eval("Symbol")%>'
+                                        <asp:Button ID="btnWatchListChart" runat="server" CommandName="CheckChart" CommandArgument='<%#Eval("Symbol")%>'
                                             Text="Chart" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="ChartPanel"
-                                            TargetControlID="btnPortfolioChart" CancelControlID="btnPortfolioChartClose"
-                                            BackgroundCssClass="modalBackground">
+                                        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnWatchListChart"
+                                            CancelControlID="btnClose" BackgroundCssClass="modalBackground">
                                         </ajaxToolkit:ModalPopupExtender>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField>
                                     <ItemTemplate>
-                                        <asp:Button ID="btnPortfolioDetail" runat="server" CommandName="StockDetails" CommandArgument='<%#Eval("Symbol")%>'
+                                        <asp:Button ID="btnWatchListDetails" runat="server" CommandName="StockDetails" CommandArgument='<%#Eval("Symbol")%>'
                                             Text="Details" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mp2" runat="server" PopupControlID="DetailPanel"
-                                            TargetControlID="btnPortfolioDetail" CancelControlID="btnPortfolioDetailsClose"
-                                            BackgroundCssClass="modalBackground">
+                                        <ajaxToolkit:ModalPopupExtender ID="mp2" runat="server" PopupControlID="Panel2" TargetControlID="btnWatchListDetails"
+                                            CancelControlID="btnDetailsClose" BackgroundCssClass="modalBackground">
                                         </ajaxToolkit:ModalPopupExtender>
                                     </ItemTemplate>
                                 </asp:TemplateField>
@@ -162,212 +157,278 @@
                 </tr>
                 <tr>
                     <td>
-                        <asp:Panel ID="ChartPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                        <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                             height: 370px;">
                             <div id="divService" runat="server">
                             </div>
-                            <asp:Button ID="btnPortfolioChartClose" runat="server" Text="Close" />
+                            <asp:Button ID="btnClose" runat="server" Text="Close" />
                         </asp:Panel>
                     </td>
                     <td>
-                        <asp:Panel ID="DetailPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                        <asp:Panel ID="Panel2" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                             height: 370px; overflow-y: scroll;">
                             <div id="divDetails" runat="server" style="overflow-y: scroll;">
                                 <asp:DetailsView ID="dvStock" runat="server" Height="100%" Width="100%">
                                 </asp:DetailsView>
                             </div>
-                            <asp:Button ID="btnPortfolioDetailsClose" runat="server" Text="Close" />
+                            <asp:Button ID="btnDetailsClose" runat="server" Text="Close" />
                         </asp:Panel>
                     </td>
-                </tr>
-                <tr>
-                    <asp:HiddenField ID="hdnFieldSymbol" runat="server" Value="" />
-                </tr>
-                <tr>
-                    <td>
-                        <asp:Panel ID="BuyPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
-                            height: 370px;">
-                            <h2>
-                                Purchase Order
-                            </h2>
-                            <table width="100%">
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblBuyStock" runat="server" Text="Stock"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtBuyStock" runat="server" Enabled="false"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td width="49%">
-                                        <asp:Label ID="lblBuyVolumes" runat="server" Text="Volumes"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtBuyVolume" runat="server"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rftxtBuyVolume" runat="server" ErrorMessage="*" ForeColor="Red"
-                                            ControlToValidate="txtBuyVolume" ValidationGroup="Buy"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblBuyPrice" runat="server" Text="Price"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtBuyPrice" runat="server"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rftxtBuyPrice" runat="server" ErrorMessage="*" ForeColor="Red"
-                                            ControlToValidate="txtBuyPrice" ValidationGroup="Buy"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblBuyDate" runat="server" Text="Purchase Date"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtBuyDateofPurchase" runat="server" Text='<%#Eval("System.DateTime.Now")%>' />
-                                        <asp:Image ID="imgbuycalendar" runat="server" ImageUrl="~/Images/calendar_year.ico"
-                                            Height="100%" Width="23px" />
-                                        <ajaxToolkit:CalendarExtender ID="calextbuy" runat="server" TargetControlID="txtBuyDateofPurchase"
-                                            PopupButtonID="imgbuycalendar">
-                                        </ajaxToolkit:CalendarExtender>
-                                        <asp:RequiredFieldValidator ID="rftxtBuyDateofPurchase" runat="server" ErrorMessage="*"
-                                            ForeColor="Red" ControlToValidate="txtBuyDateofPurchase" ValidationGroup="Buy"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <br />
-                                <tr>
-                                    <td align="center">
-                                        <asp:Button ID="btnBuyStock" runat="server" Text="Buy" OnClick="btnBuyStock_Click"
-                                            ValidationGroup="Buy" />
-                                    </td>
-                                    <td align="center">
-                                        <asp:Button ID="btnBuyClose" runat="server" Text="Close" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:ValidationSummary ID="Buy" HeaderText="Required fields:" ShowSummary="true"
-                                            DisplayMode="BulletList" EnableClientScript="true" runat="server" />
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </table>
-                        </asp:Panel>
-                    </td>
-                    <td>
-                        <asp:Panel ID="SellPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
-                            height: 370px;">
-                            <h2>
-                                Sell Order
-                            </h2>
-                            <table width="100%">
-                                <tr>
-                                    <td width="49%">
-                                        <asp:Label ID="lblSellStock" runat="server" Text="Stock"></asp:Label>
-                                    </td>
-                                    <td width="49%">
-                                        <asp:TextBox ID="txtSellStock" runat="server" Enabled="false"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblSellVolume" runat="server" Text="Volumes"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtSellVolume" runat="server"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rftxtSellVolume" runat="server" ErrorMessage="Symbol Required!"
-                                            ForeColor="Red" ControlToValidate="txtSellVolume" ValidationGroup="Sell"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblSellPrice" runat="server" Text="Price"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtSellPrice" runat="server"></asp:TextBox>
-                                        <asp:RequiredFieldValidator ID="rftxtSellPrice" runat="server" ErrorMessage="Symbol Required!"
-                                            ForeColor="Red" ControlToValidate="txtSellPrice" ValidationGroup="Sell"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:Label ID="lblSellDate" runat="server" Text="Purchase Date"></asp:Label>
-                                    </td>
-                                    <td>
-                                        <asp:TextBox ID="txtDateSell" runat="server" />
-                                        <asp:Image ID="imgsellcalender" runat="server" ImageUrl="~/Images/calendar_year.ico"
-                                            Height="16px" Width="100%" />
-                                        <ajaxToolkit:CalendarExtender ID="calextsell" runat="server" TargetControlID="txtDateSell"
-                                            PopupButtonID="imgsellcalender">
-                                        </ajaxToolkit:CalendarExtender>
-                                        <asp:RequiredFieldValidator ID="rftxtDateSell" runat="server" ErrorMessage="Symbol Required!"
-                                            ForeColor="Red" ControlToValidate="txtDateSell" ValidationGroup="Sell"></asp:RequiredFieldValidator>
-                                    </td>
-                                </tr>
-                                <br />
-                                <tr>
-                                    <td align="center">
-                                        <asp:Button ID="btnSellStock" runat="server" Text="Sell" OnClick="btnSellStock_Click" />
-                                    </td>
-                                    <td align="center">
-                                        <asp:Button ID="btnSellClose" runat="server" Text="Close" />
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <asp:ValidationSummary ID="Sell" HeaderText="Required fields:" ShowSummary="true"
-                                            DisplayMode="BulletList" EnableClientScript="true" runat="server" />
-                                    </td>
-                                    <td>
-                                    </td>
-                                </tr>
-                            </table>
-                        </asp:Panel>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <asp:GridView ID="gvPortfolio" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
-                            EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
-                            ForeColor="#333333" AllowPaging="true">
-                            <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
-                            <Columns>
-                                <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
-                                <asp:BoundField DataField="avgprice" HeaderText="Unit Price" ReadOnly="True" />
-                                <asp:BoundField DataField="remainingvolume" HeaderText="Volume" ReadOnly="True" />
-                                <asp:BoundField DataField="livePrice" HeaderText="Live Price" ReadOnly="True" />
-                                <asp:BoundField DataField="change" HeaderText="Change" ReadOnly="True" />
-                                <asp:BoundField DataField="Profit" HeaderText="Profit" ReadOnly="True" />
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnBuy" runat="server" Text="Buy" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mpBuy" runat="server" PopupControlID="BuyPanel"
-                                            TargetControlID="btnBuy" CancelControlID="btnBuyClose" BackgroundCssClass="modalBackground">
-                                        </ajaxToolkit:ModalPopupExtender>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                                <asp:TemplateField>
-                                    <ItemTemplate>
-                                        <asp:Button ID="btnSell" runat="server" Text="Sell" />
-                                        <ajaxToolkit:ModalPopupExtender ID="mpSell" runat="server" PopupControlID="SellPanel"
-                                            TargetControlID="btnSell" CancelControlID="btnSellClose" BackgroundCssClass="modalBackground">
-                                        </ajaxToolkit:ModalPopupExtender>
-                                    </ItemTemplate>
-                                </asp:TemplateField>
-                            </Columns>
-                            <EditRowStyle BackColor="#999999" />
-                            <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
-                            <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
-                            <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
-                            <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
-                            <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
-                            <SortedAscendingCellStyle BackColor="#E9E7E2" />
-                            <SortedAscendingHeaderStyle BackColor="#506C8C" />
-                            <SortedDescendingCellStyle BackColor="#FFFDF8" />
-                            <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
-                        </asp:GridView>
-                    </td>
+                    <tr>
+                        <asp:HiddenField ID="hdnFieldSymbol" runat="server" Value="" />
+                    </tr>
+                    <tr>
+                        <td>
+                            <asp:Panel ID="BuyPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                                height: 370px;">
+                                <h2>
+                                    Purchase Order
+                                </h2>
+                                <table width="100%">
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblBuyStock" runat="server" Text="Stock"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtBuyStock" runat="server" Enabled="false"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td width="49%">
+                                            <asp:Label ID="lblBuyVolumes" runat="server" Text="Volumes"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtBuyVolume" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="rftxtBuyVolume" runat="server" ErrorMessage="*" ForeColor="Red"
+                                                ControlToValidate="txtBuyVolume" ValidationGroup="Buy"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblBuyPrice" runat="server" Text="Price"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtBuyPrice" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="rftxtBuyPrice" runat="server" ErrorMessage="*" ForeColor="Red"
+                                                ControlToValidate="txtBuyPrice" ValidationGroup="Buy"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblBuyDate" runat="server" Text="Purchase Date"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtBuyDateofPurchase" runat="server" />
+                                            <asp:Image ID="imgbuycalendar" runat="server" ImageUrl="~/Images/calendar_year.ico"
+                                                Height="100%" Width="23px" />
+                                            <ajaxToolkit:CalendarExtender ID="calextbuy" runat="server" TargetControlID="txtBuyDateofPurchase"
+                                                PopupButtonID="imgbuycalendar">
+                                            </ajaxToolkit:CalendarExtender>
+                                            <asp:RequiredFieldValidator ID="rftxtBuyDateofPurchase" runat="server" ErrorMessage="*"
+                                                ForeColor="Red" ControlToValidate="txtBuyDateofPurchase" ValidationGroup="Buy"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <br />
+                                    <tr>
+                                        <td align="center">
+                                            <asp:Button ID="btnBuyStock" runat="server" Text="Buy" OnClick="btnBuyStock_Click"
+                                                ValidationGroup="Buy" />
+                                        </td>
+                                        <td align="center">
+                                            <asp:Button ID="btnBuyClose" runat="server" Text="Close" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:ValidationSummary ID="Buy" HeaderText="Required fields:" ShowSummary="true"
+                                                DisplayMode="BulletList" EnableClientScript="true" runat="server" />
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </asp:Panel>
+                        </td>
+                        <td>
+                            <asp:Panel ID="SellPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                                height: 370px;">
+                                <h2>
+                                    Sell Order
+                                </h2>
+                                <table width="100%">
+                                    <tr>
+                                        <td width="49%">
+                                            <asp:Label ID="lblSellStock" runat="server" Text="Stock"></asp:Label>
+                                        </td>
+                                        <td width="49%">
+                                            <asp:TextBox ID="txtSellStock" runat="server" Enabled="false"></asp:TextBox>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblSellVolume" runat="server" Text="Volumes"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtSellVolume" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="rftxtSellVolume" runat="server" ErrorMessage="Symbol Required!"
+                                                ForeColor="Red" ControlToValidate="txtSellVolume" ValidationGroup="Sell"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblSellPrice" runat="server" Text="Price"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtSellPrice" runat="server"></asp:TextBox>
+                                            <asp:RequiredFieldValidator ID="rftxtSellPrice" runat="server" ErrorMessage="Symbol Required!"
+                                                ForeColor="Red" ControlToValidate="txtSellPrice" ValidationGroup="Sell"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:Label ID="lblSellDate" runat="server" Text="Purchase Date"></asp:Label>
+                                        </td>
+                                        <td>
+                                            <asp:TextBox ID="txtDateSell" runat="server" />
+                                            <asp:Image ID="imgsellcalender" runat="server" ImageUrl="~/Images/calendar_year.ico"
+                                                Height="16px" Width="100%" />
+                                            <ajaxToolkit:CalendarExtender ID="calextsell" runat="server" TargetControlID="txtDateSell"
+                                                PopupButtonID="imgsellcalender">
+                                            </ajaxToolkit:CalendarExtender>
+                                            <asp:RequiredFieldValidator ID="rftxtDateSell" runat="server" ErrorMessage="Symbol Required!"
+                                                ForeColor="Red" ControlToValidate="txtDateSell" ValidationGroup="Sell"></asp:RequiredFieldValidator>
+                                        </td>
+                                    </tr>
+                                    <br />
+                                    <tr>
+                                        <td align="center">
+                                            <asp:Button ID="btnSellStock" runat="server" Text="Sell" OnClick="btnSellStock_Click" />
+                                        </td>
+                                        <td align="center">
+                                            <asp:Button ID="btnSellClose" runat="server" Text="Close" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <asp:ValidationSummary ID="Sell" HeaderText="Required fields:" ShowSummary="true"
+                                                DisplayMode="BulletList" EnableClientScript="true" runat="server" />
+                                        </td>
+                                        <td>
+                                        </td>
+                                    </tr>
+                            </asp:Panel>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" width="100%">
+                            <asp:GridView ID="gvPortfolio" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                                EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
+                                ForeColor="#333333" AllowPaging="true" OnRowCommand="gvPortfolio_RowCommand">
+                                <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                <Columns>
+                                    <asp:BoundField DataField="Symbol" HeaderText="Symbol" ReadOnly="True" />
+                                    <asp:BoundField DataField="avgprice" HeaderText="Unit Price" ReadOnly="True" />
+                                    <asp:BoundField DataField="remainingvolume" HeaderText="Volume" ReadOnly="True" />
+                                    <asp:BoundField DataField="livePrice" HeaderText="Live Price" ReadOnly="True" />
+                                    <asp:BoundField DataField="change" HeaderText="Change" ReadOnly="True" />
+                                    <asp:BoundField DataField="Profit" HeaderText="Profit" ReadOnly="True" />
+                                    <asp:TemplateField>
+                                        <ItemTemplate>
+                                            <asp:LinkButton ID="btnSelect" runat="server" Text="Select" CommandName="Select" CommandArgument='<%#Eval("Symbol")+","+Eval("profileID")+","+Eval("portfolioID")%>' />
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
+                                </Columns>
+                                <EditRowStyle BackColor="#999999" />
+                                <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
+                                <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
+                                <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
+                                <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                                <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                                <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                                <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+                            </asp:GridView>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <ajaxToolkit:Accordion ID="MyAccordion" runat="Server" SelectedIndex="0" HeaderCssClass="accordionHeader"
+                                HeaderSelectedCssClass="accordionHeaderSelected" ContentCssClass="accordionContent"
+                                AutoSize="None" FadeTransitions="true" TransitionDuration="250" FramesPerSecond="40"
+                                RequireOpenedPane="false" SuppressHeaderPostbacks="true" Width="100%">
+                                <HeaderTemplate>
+                                    <table width="100%">
+                                        <tr>
+                                            <td>
+                                                <%#DataBinder.Eval(Container.DataItem, "symbol")%>
+                                            </td>
+                                            <td>
+                                                <%#DataBinder.Eval(Container.DataItem, "remainingvolume")%>
+                                            </td>
+                                            <td>
+                                                <%#DataBinder.Eval(Container.DataItem, "livePrice")%>
+                                            </td>
+                                            <td>
+                                                <%#DataBinder.Eval(Container.DataItem, "avgprice")%>
+                                            </td>
+                                            <td>
+                                                <%#DataBinder.Eval(Container.DataItem, "profit")%>
+                                            </td>
+                                            <td>
+                                                <asp:Button ID="btnPortfolioBuy" runat="server" Text="Buy" CommandArgument='<%#Eval("Symbol")+","+ Eval("portfolioID") +","+ Eval("profileID") %>' />
+                                            </td>
+                                            <td>
+                                                <asp:Button ID="btnPortfolioSell" runat="server" Text="Sell" CommandArgument='<%#Eval("Symbol")+","+ Eval("portfolioID") +","+ Eval("profileID") %>' />
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </HeaderTemplate>
+                                <ContentTemplate>
+                                    <asp:GridView ID="gvBuyPortfolio" runat="server" AutoGenerateColumns="False" DataSource='<%# Eval("buyorder") %>'
+                                        DataKeyNames="PortfolioID" EmptyDataText="" ViewStateMode="Enabled" CellPadding="4"
+                                        GridLines="Both" Width="100%" ForeColor="#333333" AllowPaging="true">
+                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <Columns>
+                                            <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
+                                            <asp:BoundField DataField="UnitPrice" HeaderText="Unit Price" ReadOnly="True" />
+                                            <asp:BoundField DataField="DateofPurchase" HeaderText="DateofPurchase" ReadOnly="True" />
+                                        </Columns>
+                                        <EditRowStyle BackColor="#999999" />
+                                        <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
+                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                                        <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                                        <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                                        <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+                                    </asp:GridView>
+                                    <asp:GridView ID="gvSellPortfolio" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
+                                        EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
+                                        ForeColor="#333333" AllowPaging="true">
+                                        <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <Columns>
+                                            <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
+                                            <asp:BoundField DataField="UnitPrice" HeaderText="Unit Price" ReadOnly="True" />
+                                            <asp:BoundField DataField="DateofSell" HeaderText="DateofSell" ReadOnly="True" />
+                                        </Columns>
+                                        <EditRowStyle BackColor="#999999" />
+                                        <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
+                                        <HeaderStyle BackColor="#5D7B9D" Font-Bold="True" ForeColor="White" />
+                                        <PagerStyle BackColor="#5D7B9D" ForeColor="White" HorizontalAlign="Center" />
+                                        <RowStyle BackColor="#F7F6F3" HorizontalAlign="Center" ForeColor="#333333" />
+                                        <SelectedRowStyle BackColor="#E2DED6" Font-Bold="True" ForeColor="#333333" />
+                                        <SortedAscendingCellStyle BackColor="#E9E7E2" />
+                                        <SortedAscendingHeaderStyle BackColor="#506C8C" />
+                                        <SortedDescendingCellStyle BackColor="#FFFDF8" />
+                                        <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
+                                    </asp:GridView>
+                                </ContentTemplate>
+                            </ajaxToolkit:Accordion>
+                        </td>
+                    </tr>
                 </tr>
             </table>
         </ContentTemplate>

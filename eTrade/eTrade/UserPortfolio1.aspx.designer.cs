@@ -10,7 +10,7 @@
 namespace eTrade {
     
     
-    public partial class UserPortfolio {
+    public partial class UserPortfolio1 {
         
         /// <summary>
         /// ToolkitScriptManager1 control.
@@ -22,13 +22,22 @@ namespace eTrade {
         protected global::AjaxControlToolkit.ToolkitScriptManager ToolkitScriptManager1;
         
         /// <summary>
-        /// upWatchListouter control.
+        /// upPortfolioouter control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upWatchListouter;
+        protected global::System.Web.UI.UpdatePanel upPortfolioouter;
+        
+        /// <summary>
+        /// lblHeader control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblHeader;
         
         /// <summary>
         /// txtSymbol control.
@@ -67,22 +76,22 @@ namespace eTrade {
         protected global::System.Web.UI.WebControls.Label lblError;
         
         /// <summary>
-        /// gvGetSymbol control.
+        /// gvSearchSymbol control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvGetSymbol;
+        protected global::System.Web.UI.WebControls.GridView gvSearchSymbol;
         
         /// <summary>
-        /// Panel1 control.
+        /// ChartPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel1;
+        protected global::System.Web.UI.WebControls.Panel ChartPanel;
         
         /// <summary>
         /// divService control.
@@ -94,22 +103,22 @@ namespace eTrade {
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl divService;
         
         /// <summary>
-        /// btnClose control.
+        /// btnPortfolioChartClose control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnClose;
+        protected global::System.Web.UI.WebControls.Button btnPortfolioChartClose;
         
         /// <summary>
-        /// Panel2 control.
+        /// DetailPanel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Panel Panel2;
+        protected global::System.Web.UI.WebControls.Panel DetailPanel;
         
         /// <summary>
         /// divDetails control.
@@ -130,13 +139,13 @@ namespace eTrade {
         protected global::System.Web.UI.WebControls.DetailsView dvStock;
         
         /// <summary>
-        /// btnDetailsClose control.
+        /// btnPortfolioDetailsClose control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button btnDetailsClose;
+        protected global::System.Web.UI.WebControls.Button btnPortfolioDetailsClose;
         
         /// <summary>
         /// hdnFieldSymbol control.
@@ -452,15 +461,6 @@ namespace eTrade {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.ValidationSummary Sell;
-        
-        /// <summary>
-        /// gvPortfolio control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView gvPortfolio;
         
         /// <summary>
         /// MyAccordion control.

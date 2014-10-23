@@ -4,18 +4,22 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using eTrade.DataContext;
 using MarketCurrency.Classes;
 using System.Net;
+using eTrade.Classes;
+using AjaxControlToolkit;
+using eTrade.DataContext;
 using System.Transactions;
 using System.Data;
-using eTrade.Classes;
+
 
 namespace eTrade
 {
-    public partial class UserPortfolio : System.Web.UI.Page
+    public partial class UserPortfolio1 : System.Web.UI.Page
     {
+        //static CommonFunctionality _userinfo;
         Quotes searchquote;
+        //static List<Quotes> lstWatchQuotes;
         List<Quotes> lstQuotes;
         PortfolioManager pm;
 
@@ -25,20 +29,22 @@ namespace eTrade
             {
                 if (HttpContext.Current.Request.IsAuthenticated)
                 {
-                    Panel1.Visible = false;
-                    Panel2.Visible = false;
+                    ChartPanel.Visible = false;
+                    DetailPanel.Visible = false;
                     BuyPanel.Visible = false;
                     SellPanel.Visible = false;
-                    eUser user = (eUser)Session["user"];
-                    gvGetSymbol.DataSource = null;
-                    gvGetSymbol.DataBind();
+                    eUser _userinfo = (eUser)Session["user"];
+                    lblHeader.Text = _userinfo.UserName;
                     pm = new PortfolioManager();
-                    List<PortfolioManager> upm = new List<PortfolioManager>();
-                    upm = pm.getPortfolioManager(Convert.ToInt32(Session["profileid"].ToString()));
-                    ViewState["upm"] = upm;
-                    gvPortfolio.DataSource = upm;
-                    gvPortfolio.DataBind();
-                    upWatchListouter.Update();
+                    MyAccordion.DataSource = pm.getPortfolioManager(Convert.ToInt32(Session["profileid"].ToString()));
+                    MyAccordion.DataBind();
+                    if (ViewState["searchquote"] == null)
+                    {
+                        ViewState["searchquote"] = null;
+                    }
+                    gvSearchSymbol.DataSource = null;
+                    gvSearchSymbol.DataBind();
+                    upPortfolioouter.Update();
                 }
             }
         }
@@ -47,27 +53,32 @@ namespace eTrade
         {
             if (txtSymbol.Text != null && txtSymbol.Text.Trim().Length != 0)
             {
-                getgvGetSymbolData(txtSymbol.Text.Trim());
+                txtBuyStock.Text = txtSymbol.Text.Trim();
+                getgvSearchSymbol(txtSymbol.Text.Trim());
             }
         }
 
-        public void getgvGetSymbolData(string symbol)
+        public void getgvSearchSymbol(string symbol)
         {
             hdnFieldSymbol.Value = symbol;
-            searchquote = getObject(symbol);
+            if (ViewState["searchquote"] == null)
+            {
+                searchquote = getObject(symbol);
+                ViewState["searchquote"] = searchquote;
+            }
             lstQuotes = new List<Quotes>();
             lstQuotes.Add(searchquote);
-            gvGetSymbol.DataSource = lstQuotes;
-            gvGetSymbol.DataBind();
+            gvSearchSymbol.DataSource = lstQuotes;
+            gvSearchSymbol.DataBind();
             divService.InnerHtml = getChart(txtSymbol.Text);
             dvStock.DataSource = lstQuotes;
             dvStock.DataBind();
-            Panel1.Visible = true;
-            Panel2.Visible = true;
+            upPortfolioouter.Update();
+            ChartPanel.Visible = true;
+            DetailPanel.Visible = true;
             BuyPanel.Visible = true;
             txtSymbol.Text = "";
-            txtBuyStock.Text = hdnFieldSymbol.Value.ToString();
-            upWatchListouter.Update();
+            
         }
 
         public Quotes getObject(string symbol)
@@ -163,63 +174,54 @@ namespace eTrade
 
         protected void btnBuyStock_Click(object sender, EventArgs e)
         {
-            putBuyOrder();
-        }
-
-        public void putBuyOrder()
-        {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
-            var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted });
-            int profileid = Convert.ToInt32(Session["profileid"].ToString());
-            try
-            {
-                using (scope)
-                {
-                    var userportfolio = (from p in dbcontext.Portfolios where p.Symbol == hdnFieldSymbol.Value && p.ProfileID == profileid && p.isActive == true select p).SingleOrDefault();
-                    BuyOrder userbuyorder = new BuyOrder();
-                    if (userportfolio == null)
-                    {
-                        userportfolio = new Portfolio();
-                        userportfolio.Symbol = hdnFieldSymbol.Value.ToString();
-                        userportfolio.ProfileID = profileid;
-                        userportfolio.TotalVolumes = Convert.ToDecimal(txtBuyVolume.Text.ToString());
-                        userportfolio.isActive = true;
-                        dbcontext.AddToPortfolios(userportfolio);
-                    }
-                    else
-                    {
-                        userportfolio.TotalVolumes = userportfolio.TotalVolumes + Convert.ToDecimal(txtBuyVolume.Text.ToString());
-                        dbcontext.SaveChanges();
-                    }
-                    userbuyorder.DateofPurchase = Convert.ToDateTime(txtBuyDateofPurchase.Text.ToString());
-                    userbuyorder.UnitPrice = Convert.ToDecimal(txtBuyPrice.Text.ToString());
-                    userbuyorder.Volume = Convert.ToDecimal(txtBuyVolume.Text.ToString());
-                    userbuyorder.PortfolioID = userportfolio.PortfolioID;
-                    dbcontext.AddToBuyOrders(userbuyorder);
-                    dbcontext.SaveChanges();
-                    scope.Complete();
-                    setControlVisibility();
-                }
-            }
-            catch (Exception ex)
-            {
-                scope.Dispose();
-            }
-            finally
-            {
-                if (dbcontext.Connection.State == ConnectionState.Open)
-                {
-                    dbcontext.Connection.Close();
-                }
-            }
+             var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions()
+                {IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted});
+             int profileid = Convert.ToInt32(Session["profileid"].ToString());
+             try
+             {
+                 using (scope)
+                 {
+                     var userportfolio = (from p in dbcontext.Portfolios where p.Symbol == hdnFieldSymbol.Value && p.ProfileID == profileid && p.isActive == true select p).SingleOrDefault();
+                     BuyOrder userbuyorder = new BuyOrder();
+                     if (userportfolio == null)
+                     {
+                         userportfolio = new Portfolio();
+                         userportfolio.Symbol = hdnFieldSymbol.Value.ToString();
+                         userportfolio.ProfileID = profileid;
+                         userportfolio.TotalVolumes = Convert.ToDecimal(txtBuyVolume.Text.ToString());
+                         userportfolio.isActive = true;
+                         dbcontext.AddToPortfolios(userportfolio);
+                     }
+                     else
+                     {
+                         userportfolio.TotalVolumes = userportfolio.TotalVolumes + Convert.ToDecimal(txtBuyVolume.Text.ToString());
+                         dbcontext.SaveChanges();
+                     }
+                     userbuyorder.DateofPurchase = Convert.ToDateTime(txtBuyDateofPurchase.Text.ToString());
+                     userbuyorder.UnitPrice = Convert.ToDecimal(txtBuyPrice.Text.ToString());
+                     userbuyorder.Volume = Convert.ToDecimal(txtBuyVolume.Text.ToString());
+                     userbuyorder.PortfolioID = userportfolio.PortfolioID;
+                     dbcontext.AddToBuyOrders(userbuyorder);
+                     dbcontext.SaveChanges();
+                     scope.Complete();
+                     setControlVisibility();
+                 }
+             }
+             catch (Exception ex)
+             {
+                 scope.Dispose();
+             }
+             finally
+             {
+                 if (dbcontext.Connection.State == ConnectionState.Open)
+                 {
+                     dbcontext.Connection.Close();
+                 }
+             }
         }
 
         protected void btnSellStock_Click(object sender, EventArgs e)
-        {
-            putSellOrder();
-        }
-
-        public void putSellOrder()
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
             var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted });
@@ -233,7 +235,7 @@ namespace eTrade
                     if (userportfolio == null)
                     {
                         InvalidExpressionException ex = new InvalidExpressionException();
-                        throw (ex);
+                        throw(ex);
                     }
                     else
                     {
@@ -255,7 +257,6 @@ namespace eTrade
                     dbcontext.AddToSellOrders(sellorder);
                     dbcontext.SaveChanges();
                     scope.Complete();
-                    setControlVisibility();
                 }
             }
             catch (Exception ex)
@@ -283,28 +284,13 @@ namespace eTrade
             txtSellStock.Text = "";
             txtSellVolume.Text = "";
             txtSymbol.Text = "";
-            Panel1.Visible = false;
-            Panel2.Visible = false;
+            ChartPanel.Visible = false;
+            DetailPanel.Visible = false;
             BuyPanel.Visible = false;
             SellPanel.Visible = false;
-            gvGetSymbol.DataSource = null;
-            gvGetSymbol.DataBind();
-            pm = new PortfolioManager();
-            gvPortfolio.DataSource = pm.getPortfolioManager(Convert.ToInt32(Session["profileid"].ToString()));
-            gvPortfolio.DataBind();
-            upWatchListouter.Update();
-        }
-
-        protected void gvPortfolio_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Select")
-            {
-                List<PortfolioManager> upm = ViewState["upm"] as List<PortfolioManager>;
-                string arg = e.CommandArgument.ToString();
-                string [] slist = arg.Split(',');
-                MyAccordion.DataSource = upm.Where(i => i.portfolioID == Convert.ToInt64(slist[1]));
-                MyAccordion.DataBind();
-            }
+            gvSearchSymbol.DataSource = null;
+            gvSearchSymbol.DataBind();
+            upPortfolioouter.Update();
         }
     }
 }

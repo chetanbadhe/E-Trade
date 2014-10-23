@@ -27,7 +27,7 @@ namespace eTrade.Classes
                     if (userdata.Count != 0)
                     {
                         _username = userdata[0];
-                        _isactive = Convert.ToBoolean(userdata[1]);
+                        _isactive = true;
                         _userid = Convert.ToInt32(userdata[2]);
                         _emailid = userdata[3];
                         _profileid = Convert.ToInt32(userdata[4]);

@@ -61,7 +61,9 @@ namespace eTrade.Account
                 authCookie.Value = FormsAuthentication.Encrypt(newTicket);
                 Response.Cookies.Add(authCookie);
 
-                //FormsAuthentication.SetAuthCookie(UserName.Text, false /* createPersistentCookie */);
+                Session["user"] = user;
+                Session["profileid"] = profile1.ProfileID;
+                Session["username"] = user.UserName;
 
                 string continueUrl = ViewState["ContinueDestinationPageUrl"].ToString();
                 if (String.IsNullOrEmpty(continueUrl))
