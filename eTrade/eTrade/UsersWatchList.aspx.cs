@@ -14,10 +14,10 @@ namespace eTrade
 {
     public partial class UsersWatchList : System.Web.UI.Page
     {
-        static CommonFunctionality _userinfo;
-        static Quotes searchquote;
-        static List<Quotes> lstWatchQuotes;
-        static List<Quotes> lstQuotes = new List<Quotes>();
+        //static CommonFunctionality _userinfo;
+        Quotes searchquote;
+        List<Quotes> lstWatchQuotes;
+        List<Quotes> lstQuotes = new List<Quotes>();
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -27,7 +27,7 @@ namespace eTrade
                 {
                     Panel1.Visible = false;
                     Panel2.Visible = false;
-                    _userinfo = new CommonFunctionality();
+                    //_userinfo = new CommonFunctionality();
                     gvGetSymbol.DataSource = lstQuotes;
                     gvGetSymbol.DataBind();
                     BindWatchList();
@@ -157,7 +157,8 @@ namespace eTrade
         public void BindWatchList()
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
-            var lstWatchList = (from s in dbcontext.WatchLists where s.ProfileID == _userinfo._profileid && s.isActive == true select s).ToList<WatchList>();
+            long profid = Convert.ToInt64(Session["profileid"].ToString());
+            var lstWatchList = (from s in dbcontext.WatchLists where s.ProfileID == profid && s.isActive == true select s).ToList<WatchList>();
             lstWatchQuotes = new List<Quotes>();
             Quotes q;
             foreach (WatchList _w in lstWatchList)
@@ -173,14 +174,15 @@ namespace eTrade
         protected void btnAdd_Click(object sender, EventArgs e)
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
-            var isexist = (from s in dbcontext.WatchLists where s.ProfileID == _userinfo._profileid && s.Symbol == searchquote.Symbol  select s).SingleOrDefault();
+            long profid = Convert.ToInt64(Session["profileid"].ToString());
+            var isexist = (from s in dbcontext.WatchLists where s.ProfileID == profid && s.Symbol == searchquote.Symbol select s).SingleOrDefault();
             if (isexist == null)
             {
                 WatchList watchlist = new WatchList();
-                watchlist.Symbol = searchquote.Symbol;
+                watchlist.Symbol = hdnFieldSymbol.Value.ToString();
                 watchlist.WatchDate = System.DateTime.Now;
                 watchlist.isActive = true;
-                watchlist.ProfileID = _userinfo._profileid;
+                watchlist.ProfileID = Convert.ToInt64(Session["profileid"]);
                 dbcontext.AddToWatchLists(watchlist);
                 dbcontext.SaveChanges();
                 BindWatchList();
@@ -207,7 +209,6 @@ namespace eTrade
                 Panel2.Visible = false;
                 btnAdd.Visible = false;
                 upWatchListouter.Update();
-
             }
         }
 
@@ -223,7 +224,7 @@ namespace eTrade
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
-            WatchList wsymbol = dbcontext.WatchLists.First(w => w.Symbol == hdnFieldSymbol.Value && w.ProfileID == _userinfo._profileid);
+            WatchList wsymbol = dbcontext.WatchLists.First(w => w.Symbol == hdnFieldSymbol.Value && w.ProfileID == Convert.ToInt64(Session["profileid"]));
             wsymbol.isActive = false;
             dbcontext.SaveChanges();
             Panel1.Visible = false;

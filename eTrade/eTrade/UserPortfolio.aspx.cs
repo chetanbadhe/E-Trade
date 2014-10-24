@@ -299,12 +299,16 @@ namespace eTrade
         {
             if (e.CommandName == "Select")
             {
+                BuyPanel.Visible = true;
+                //SellPanel.Visible = true;
                 List<PortfolioManager> upm = ViewState["upm"] as List<PortfolioManager>;
                 string arg = e.CommandArgument.ToString();
                 string [] slist = arg.Split(',');
-                MyAccordion.DataSource = upm.Where(i => i.portfolioID == Convert.ToInt64(slist[1]));
+                MyAccordion.DataSource = upm.Where(i => i.portfolioID == Convert.ToInt64(slist[2]) && i.symbol == slist[0]);
                 MyAccordion.DataBind();
+                upWatchListouter.Update();
             }
         }
+
     }
 }

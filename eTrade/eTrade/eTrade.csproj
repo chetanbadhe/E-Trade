@@ -139,7 +139,6 @@
     <Compile Include="Account\Register.aspx.designer.cs">
       <DependentUpon>Register.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Classes\CommonFunctionality.cs" />
     <Compile Include="Classes\PortfolioManager.cs" />
     <Compile Include="Classes\Quotes.cs" />
     <Compile Include="Classes\YahooFinance.cs" />

@@ -334,7 +334,8 @@
                                     <asp:BoundField DataField="Profit" HeaderText="Profit" ReadOnly="True" />
                                     <asp:TemplateField>
                                         <ItemTemplate>
-                                            <asp:LinkButton ID="btnSelect" runat="server" Text="Select" CommandName="Select" CommandArgument='<%#Eval("Symbol")+","+Eval("profileID")+","+Eval("portfolioID")%>' />
+                                            <asp:LinkButton ID="btnSelect" runat="server" Text="Select" CommandName="Select"
+                                                CommandArgument='<%#Eval("Symbol")+","+Eval("profileID")+","+Eval("portfolioID")%>' />
                                         </ItemTemplate>
                                     </asp:TemplateField>
                                 </Columns>
@@ -356,7 +357,7 @@
                             <ajaxToolkit:Accordion ID="MyAccordion" runat="Server" SelectedIndex="0" HeaderCssClass="accordionHeader"
                                 HeaderSelectedCssClass="accordionHeaderSelected" ContentCssClass="accordionContent"
                                 AutoSize="None" FadeTransitions="true" TransitionDuration="250" FramesPerSecond="40"
-                                RequireOpenedPane="false" SuppressHeaderPostbacks="true" Width="100%">
+                                RequireOpenedPane="false" SuppressHeaderPostbacks="true" Width="100%" Height="100%">
                                 <HeaderTemplate>
                                     <table width="100%">
                                         <tr>
@@ -375,24 +376,32 @@
                                             <td>
                                                 <%#DataBinder.Eval(Container.DataItem, "profit")%>
                                             </td>
-                                            <td>
-                                                <asp:Button ID="btnPortfolioBuy" runat="server" Text="Buy" CommandArgument='<%#Eval("Symbol")+","+ Eval("portfolioID") +","+ Eval("profileID") %>' />
-                                            </td>
-                                            <td>
-                                                <asp:Button ID="btnPortfolioSell" runat="server" Text="Sell" CommandArgument='<%#Eval("Symbol")+","+ Eval("portfolioID") +","+ Eval("profileID") %>' />
-                                            </td>
                                         </tr>
                                     </table>
                                 </HeaderTemplate>
                                 <ContentTemplate>
+                                    Purchase Details
                                     <asp:GridView ID="gvBuyPortfolio" runat="server" AutoGenerateColumns="False" DataSource='<%# Eval("buyorder") %>'
                                         DataKeyNames="PortfolioID" EmptyDataText="" ViewStateMode="Enabled" CellPadding="4"
-                                        GridLines="Both" Width="100%" ForeColor="#333333" AllowPaging="true">
+                                        ShowHeaderWhenEmpty="true" GridLines="Both" Width="100%" ForeColor="#333333"
+                                        AllowPaging="true" ShowFooter="true">
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                                         <Columns>
                                             <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
                                             <asp:BoundField DataField="UnitPrice" HeaderText="Unit Price" ReadOnly="True" />
                                             <asp:BoundField DataField="DateofPurchase" HeaderText="DateofPurchase" ReadOnly="True" />
+                                            <asp:TemplateField>
+                                                <FooterTemplate>
+                                                    <asp:Button ID="btnBuyStock" runat="server" Text="Purchase" />
+                                                    <ajaxToolkit:ModalPopupExtender ID="mpbuy" runat="server" PopupControlID="BuyPanel"
+                                                        TargetControlID="btnBuyStock" CancelControlID="btnBuyClose" BackgroundCssClass="modalBackground">
+                                                    </ajaxToolkit:ModalPopupExtender>
+                                                    <%--<asp:Button ID="btnSellStock" runat="server" Text="Sell" />
+                                                    <ajaxToolkit:ModalPopupExtender ID="mpSell" runat="server" PopupControlID="SellPanel"
+                                                        TargetControlID="btnSellStock" CancelControlID="btnSellClose" BackgroundCssClass="modalBackground">
+                                                    </ajaxToolkit:ModalPopupExtender>--%>
+                                                </FooterTemplate>
+                                            </asp:TemplateField>
                                         </Columns>
                                         <EditRowStyle BackColor="#999999" />
                                         <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
@@ -405,12 +414,17 @@
                                         <SortedDescendingCellStyle BackColor="#FFFDF8" />
                                         <SortedDescendingHeaderStyle BackColor="#6F8DAE" />
                                     </asp:GridView>
-                                    <asp:GridView ID="gvSellPortfolio" runat="server" AutoGenerateColumns="False" DataKeyNames="Symbol"
-                                        EmptyDataText="" ViewStateMode="Enabled" CellPadding="4" GridLines="Both" Width="100%"
-                                        ForeColor="#333333" AllowPaging="true">
+                                    Sell Details
+                                    <asp:GridView ID="gvSellPortfolio" runat="server" AutoGenerateColumns="False" DataKeyNames="PortfolioID"
+                                        DataSource='<%# Eval("sellorder") %>' EmptyDataText="" ViewStateMode="Enabled"
+                                        CellPadding="4" GridLines="Both" Width="100%" ShowHeaderWhenEmpty="true" ForeColor="#333333"
+                                        AllowPaging="true" ShowFooter="true">
                                         <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
+                                        <EmptyDataTemplate>
+                                            No sell Activity yet
+                                        </EmptyDataTemplate>
                                         <Columns>
-                                            <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" />
+                                            <asp:BoundField DataField="Volume" HeaderText="Volume" ReadOnly="True" FooterText="Volume" />
                                             <asp:BoundField DataField="UnitPrice" HeaderText="Unit Price" ReadOnly="True" />
                                             <asp:BoundField DataField="DateofSell" HeaderText="DateofSell" ReadOnly="True" />
                                         </Columns>

@@ -19,9 +19,9 @@ namespace eTrade
         {
             Session["user"]=null;
             Session["profileid"]=null;
-            HttpCookie authCookie = FormsAuthentication.GetAuthCookie(Session["username"].ToString(), false);
+            //HttpCookie authCookie = FormsAuthentication.GetAuthCookie(Session["username"].ToString(), false);
             Session["username"]= null;
-            authCookie.Expires = System.DateTime.Now;
+            //authCookie.Expires = System.DateTime.Now;
         }
     }
 }
