@@ -8,5 +8,31 @@
         Welcome to your Portfolio!
     </h2>
     <p>
+        <table width="100%">
+            <tr>
+                <td width="45%">
+                    <h3>
+                        My Stocks Portfolio
+                    </h3>
+                </td>
+                <td>
+                </td>
+                <td width="45%">
+                    <h3>
+                        My Currency Converter
+                    </h3>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <asp:ImageButton ID="imgStockBTN" runat="server" ImageUrl="~/Images/Stocks.png" Width="75%" Height="75%" PostBackUrl=UserPortfolio.aspx />
+                </td>
+                <td>
+                </td>
+                <td>
+                    <asp:ImageButton ID="imgCurrencyBTN" runat="server" ImageUrl="~/Images/Currency.png" Width="75%" Height="75%" PostBackUrl="~/CurrencyMarket.aspx" />
+                </td>
+            </tr>
+        </table>
     </p>
 </asp:Content>

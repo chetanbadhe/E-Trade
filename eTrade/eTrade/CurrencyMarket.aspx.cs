@@ -7,6 +7,8 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Xml;
 using System.Collections;
+using eTrade.CurrencyConvertorWS;
+
 
 namespace eTrade
 {
@@ -18,7 +20,7 @@ namespace eTrade
             if (!IsPostBack)
             {
                 
-                CurrencyConvertor.Currency cs = new CurrencyConvertor.Currency();
+                CurrencyConvertorWS.Currency cs = new CurrencyConvertorWS.Currency();
                 Array arr;
                 arr = Enum.GetValues(cs.GetType());
                 int n = arr.Length;
@@ -31,12 +33,21 @@ namespace eTrade
 
         protected void btnGetRate_Click(object sender, EventArgs e)
         {
-            CurrencyConvertor.CurrencyConvertorSoapClient objCurCon = new CurrencyConvertor.CurrencyConvertorSoapClient();
-            CurrencyConvertor.CurrencyConvertorSoapClient objCurrency = new CurrencyConvertor.CurrencyConvertorSoapClient();
-            double dt = new double();
-            dt = objCurCon.ConversionRate((CurrencyConvertor.Currency)Enum.Parse(objCurrency.GetType(), ddlcurrencyfrom.Text),
-                (CurrencyConvertor.Currency)Enum.Parse(objCurrency.GetType(), ddlcurrencyto.Text));
-            txtcurrencyto.Text = Convert.ToString(dt * Convert.ToDouble(txtcurrencyfrom.Text));
+            double rate = 0, result = 0;
+            Currency curr1, curr2;
+            try
+            {
+                CurrencyConvertor ws = new CurrencyConvertor();
+                curr1 = (Currency)Enum.Parse(typeof(Currency), ddlcurrencyfrom.SelectedItem.Value);
+                curr2 = (Currency)Enum.Parse(typeof(Currency), ddlcurrencyto.SelectedItem.Value);
+                rate = ws.ConversionRate(curr1, curr2);
+                result = System.Convert.ToDouble(txtcurrencyfrom.Text) * rate;
+                txtcurrencyto.Text = result.ToString();
+            }
+            catch
+            {
+               
+            }
         }    
     }
 }

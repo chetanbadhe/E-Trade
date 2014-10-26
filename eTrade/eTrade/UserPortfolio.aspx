@@ -182,9 +182,22 @@
                             <asp:Panel ID="BuyPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                                 height: 370px;">
                                 <h2>
-                                    Purchase Order
+                                    Purchase/ Sell Order
                                 </h2>
                                 <table width="100%">
+                                    <tr>
+                                        <td>
+                                            Make a Selection
+                                        </td>
+                                        <td>
+                                            <asp:DropDownList ID="ddlAction" runat="server" ValidationGroup="Buy" 
+                                                onselectedindexchanged="ddlAction_SelectedIndexChanged">
+                                                <asp:ListItem>No Selection</asp:ListItem>
+                                                <asp:ListItem>Purchase</asp:ListItem>
+                                                <asp:ListItem>Sell</asp:ListItem>
+                                            </asp:DropDownList>
+                                        </td>
+                                    </tr>
                                     <tr>
                                         <td>
                                             <asp:Label ID="lblBuyStock" runat="server" Text="Stock"></asp:Label>
@@ -198,7 +211,7 @@
                                             <asp:Label ID="lblBuyVolumes" runat="server" Text="Volumes"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyVolume" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtBuyVolume" runat="server" Enabled=false></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="rftxtBuyVolume" runat="server" ErrorMessage="*" ForeColor="Red"
                                                 ControlToValidate="txtBuyVolume" ValidationGroup="Buy"></asp:RequiredFieldValidator>
                                         </td>
@@ -208,7 +221,7 @@
                                             <asp:Label ID="lblBuyPrice" runat="server" Text="Price"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyPrice" runat="server"></asp:TextBox>
+                                            <asp:TextBox ID="txtBuyPrice" runat="server" Enabled=false></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="rftxtBuyPrice" runat="server" ErrorMessage="*" ForeColor="Red"
                                                 ControlToValidate="txtBuyPrice" ValidationGroup="Buy"></asp:RequiredFieldValidator>
                                         </td>
@@ -218,7 +231,7 @@
                                             <asp:Label ID="lblBuyDate" runat="server" Text="Purchase Date"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyDateofPurchase" runat="server" />
+                                            <asp:TextBox ID="txtBuyDateofPurchase" runat="server" Enabled=false />
                                             <asp:Image ID="imgbuycalendar" runat="server" ImageUrl="~/Images/calendar_year.ico"
                                                 Height="100%" Width="23px" />
                                             <ajaxToolkit:CalendarExtender ID="calextbuy" runat="server" TargetControlID="txtBuyDateofPurchase"
@@ -228,29 +241,31 @@
                                                 ForeColor="Red" ControlToValidate="txtBuyDateofPurchase" ValidationGroup="Buy"></asp:RequiredFieldValidator>
                                         </td>
                                     </tr>
-                                    <br />
-                                    <tr>
-                                        <td align="center">
-                                            <asp:Button ID="btnBuyStock" runat="server" Text="Buy" OnClick="btnBuyStock_Click"
-                                                ValidationGroup="Buy" />
-                                        </td>
-                                        <td align="center">
-                                            <asp:Button ID="btnBuyClose" runat="server" Text="Close" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:ValidationSummary ID="Buy" HeaderText="Required fields:" ShowSummary="true"
-                                                DisplayMode="BulletList" EnableClientScript="true" runat="server" />
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
+                                    <caption>
+                                        <br />
+                                        <tr>
+                                            <td align="center">
+                                                <asp:Button ID="btnBuyStock" runat="server" OnClick="btnBuyStock_Click" Text="Action"
+                                                    ValidationGroup="Buy" Enabled=false />
+                                            </td>
+                                            <td align="center">
+                                                <asp:Button ID="btnBuyClose" runat="server" Text="Close" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:ValidationSummary ID="Buy" runat="server" DisplayMode="BulletList" EnableClientScript="true"
+                                                    HeaderText="Required fields:" ShowSummary="true" />
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </caption>
                                 </table>
                             </asp:Panel>
                         </td>
                         <td>
-                            <asp:Panel ID="SellPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
+                            <%--<asp:Panel ID="SellPanel" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                                 height: 370px;">
                                 <h2>
                                     Sell Order
@@ -291,7 +306,7 @@
                                         <td>
                                             <asp:TextBox ID="txtDateSell" runat="server" />
                                             <asp:Image ID="imgsellcalender" runat="server" ImageUrl="~/Images/calendar_year.ico"
-                                                Height="16px" Width="100%" />
+                                                Height="17px" Width="100%" />
                                             <ajaxToolkit:CalendarExtender ID="calextsell" runat="server" TargetControlID="txtDateSell"
                                                 PopupButtonID="imgsellcalender">
                                             </ajaxToolkit:CalendarExtender>
@@ -299,24 +314,26 @@
                                                 ForeColor="Red" ControlToValidate="txtDateSell" ValidationGroup="Sell"></asp:RequiredFieldValidator>
                                         </td>
                                     </tr>
-                                    <br />
-                                    <tr>
-                                        <td align="center">
-                                            <asp:Button ID="btnSellStock" runat="server" Text="Sell" OnClick="btnSellStock_Click" />
-                                        </td>
-                                        <td align="center">
-                                            <asp:Button ID="btnSellClose" runat="server" Text="Close" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>
-                                            <asp:ValidationSummary ID="Sell" HeaderText="Required fields:" ShowSummary="true"
-                                                DisplayMode="BulletList" EnableClientScript="true" runat="server" />
-                                        </td>
-                                        <td>
-                                        </td>
-                                    </tr>
-                            </asp:Panel>
+                                    <caption>
+                                        <br />
+                                        <tr>
+                                            <td align="center">
+                                                <asp:Button ID="btnSellStock" runat="server" OnClick="btnSellStock_Click" Text="Sell" />
+                                            </td>
+                                            <td align="center">
+                                                <asp:Button ID="btnSellClose" runat="server" Text="Close" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <asp:ValidationSummary ID="Sell" runat="server" DisplayMode="BulletList" EnableClientScript="true"
+                                                    HeaderText="Required fields:" ShowSummary="true" />
+                                            </td>
+                                            <td>
+                                            </td>
+                                        </tr>
+                                    </caption>
+                            </asp:Panel>--%>
                         </td>
                     </tr>
                     <tr>
@@ -362,6 +379,23 @@
                                     <table width="100%">
                                         <tr>
                                             <td>
+                                                Symbol
+                                            </td>
+                                            <td>
+                                                Volume
+                                            </td>
+                                            <td>
+                                                Live Price
+                                            </td>
+                                            <td>
+                                                Avg Price
+                                            </td>
+                                            <td>
+                                                Profit
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
                                                 <%#DataBinder.Eval(Container.DataItem, "symbol")%>
                                             </td>
                                             <td>
@@ -396,10 +430,6 @@
                                                     <ajaxToolkit:ModalPopupExtender ID="mpbuy" runat="server" PopupControlID="BuyPanel"
                                                         TargetControlID="btnBuyStock" CancelControlID="btnBuyClose" BackgroundCssClass="modalBackground">
                                                     </ajaxToolkit:ModalPopupExtender>
-                                                    <%--<asp:Button ID="btnSellStock" runat="server" Text="Sell" />
-                                                    <ajaxToolkit:ModalPopupExtender ID="mpSell" runat="server" PopupControlID="SellPanel"
-                                                        TargetControlID="btnSellStock" CancelControlID="btnSellClose" BackgroundCssClass="modalBackground">
-                                                    </ajaxToolkit:ModalPopupExtender>--%>
                                                 </FooterTemplate>
                                             </asp:TemplateField>
                                         </Columns>
