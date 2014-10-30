@@ -5,6 +5,8 @@ using System.Web;
 using eTrade.DataContext;
 using MarketCurrency.Classes;
 using System.Net;
+using System.Transactions;
+using System.Data;
 
 namespace eTrade.Classes
 {
@@ -29,40 +31,55 @@ namespace eTrade.Classes
 
         public List<PortfolioManager> getPortfolioManager(int profile_id)
         {
+            eTradeDbEntities dbcontext = new eTradeDbEntities();
+            var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted });
+            List<PortfolioManager> pmlist = new List<PortfolioManager>();
             try
             {
-                eTradeDbEntities dbcontext = new eTradeDbEntities();
-                List<Portfolio> plist = (from p in dbcontext.Portfolios where p.ProfileID == profile_id && p.isActive == true select p).ToList<Portfolio>();
-                List<PortfolioManager> pmlist = new List<PortfolioManager>();
-                decimal buyVolumetotal;
-                decimal sellVolumetotal;
-                decimal buyTotalPrice;
-                decimal sellTotalPrice;
-                foreach (var p in plist)
+                using (scope)
                 {
-                    PortfolioManager pmgr = new PortfolioManager();
-                    pmgr.profileID = profile_id;
-                    pmgr.symbol = p.Symbol;
-                    pmgr.portfolioID = p.PortfolioID;
-                    pmgr.buyorder = (from b in dbcontext.BuyOrders where b.PortfolioID == p.PortfolioID select b).ToList<BuyOrder>();
-                    pmgr.sellorder = (from b in dbcontext.SellOrders where b.PortfolioID == p.PortfolioID select b).ToList<SellOrder>();
-                    pmgr.livePrice = getObject(p.Symbol);
-                    buyVolumetotal = pmgr.buyorder.Sum(i => i.Volume);
-                    sellVolumetotal = pmgr.sellorder.Sum(j => j.Volume);
-                    buyTotalPrice = pmgr.buyorder.Sum(i => i.Volume * i.UnitPrice);
-                    sellTotalPrice = pmgr.sellorder.Sum(j => j.Volume * j.UnitPrice);
-                    pmgr.avgprice = buyTotalPrice / buyVolumetotal;
-                    pmgr.change = pmgr.livePrice - pmgr.avgprice;
-                    pmgr.remainingvolume = buyVolumetotal - sellVolumetotal;
-                    pmgr.profit =  (pmgr.remainingvolume * pmgr.livePrice) - buyTotalPrice + (sellTotalPrice); 
-                    pmlist.Add(pmgr);
+                    long pid = Convert.ToInt64(profile_id);
+                    List<Portfolio> plist = (from p in dbcontext.Portfolios where p.ProfileID == pid && p.isActive == true select p).ToList<Portfolio>();
+                   
+                    decimal buyVolumetotal;
+                    decimal sellVolumetotal;
+                    decimal buyTotalPrice;
+                    decimal sellTotalPrice;
+                    foreach (var p in plist)
+                    {
+                        PortfolioManager pmgr = new PortfolioManager();
+                        pmgr.profileID = profile_id;
+                        pmgr.symbol = p.Symbol;
+                        pmgr.portfolioID = p.PortfolioID;
+                        pmgr.buyorder = (from b in dbcontext.BuyOrders where b.PortfolioID == p.PortfolioID select b).ToList<BuyOrder>();
+                        pmgr.sellorder = (from b in dbcontext.SellOrders where b.PortfolioID == p.PortfolioID select b).ToList<SellOrder>();
+                        pmgr.livePrice = getObject(p.Symbol);
+                        buyVolumetotal = pmgr.buyorder.Sum(i => i.Volume);
+                        sellVolumetotal = pmgr.sellorder.Sum(j => j.Volume);
+                        buyTotalPrice = pmgr.buyorder.Sum(i => i.Volume * i.UnitPrice);
+                        sellTotalPrice = pmgr.sellorder.Sum(j => j.Volume * j.UnitPrice);
+                        pmgr.avgprice = buyTotalPrice / buyVolumetotal;
+                        pmgr.change = pmgr.livePrice - pmgr.avgprice;
+                        pmgr.remainingvolume = buyVolumetotal - sellVolumetotal;
+                        pmgr.profit = (pmgr.remainingvolume * pmgr.livePrice) - buyTotalPrice + (sellTotalPrice);
+                        pmlist.Add(pmgr);
+                    }
+                    scope.Complete();
+                    
                 }
-                return pmlist;
             }
             catch (Exception ex)
             {
-                return null;
+                scope.Dispose();
             }
+            finally
+            {
+                if (dbcontext.Connection.State == ConnectionState.Open)
+                {
+                    //dbcontext.Connection.Close();
+                }
+            }
+            return pmlist;
         }
 
         public decimal getObject(string symbol)

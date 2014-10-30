@@ -28,7 +28,7 @@ namespace eTrade
                     Panel1.Visible = false;
                     Panel2.Visible = false;
                     BuyPanel.Visible = false;
-                    //SellPanel.Visible = false;
+                    //sPanel.Visible = false;
                     eUser user = (eUser)Session["user"];
                     gvGetSymbol.DataSource = null;
                     gvGetSymbol.DataBind();
@@ -48,6 +48,7 @@ namespace eTrade
             if (txtSymbol.Text != null && txtSymbol.Text.Trim().Length != 0)
             {
                 getgvGetSymbolData(txtSymbol.Text.Trim());
+                
             }
         }
 
@@ -163,7 +164,13 @@ namespace eTrade
 
         protected void btnBuyStock_Click(object sender, EventArgs e)
         {
-            putBuyOrder();
+            if (ddlAction.SelectedValue == "Purchase")
+                putBuyOrder();
+            else if (ddlAction.SelectedValue == "Sell")
+                putSellOrder();
+            MyAccordion.DataSource = null;
+            MyAccordion.DataBind();
+            upWatchListouter.Update();
         }
 
         public void putBuyOrder()
@@ -209,67 +216,65 @@ namespace eTrade
             {
                 if (dbcontext.Connection.State == ConnectionState.Open)
                 {
-                    dbcontext.Connection.Close();
+                    //dbcontext.Connection.Close();
                 }
             }
         }
 
-        protected void btnSellStock_Click(object sender, EventArgs e)
+        public void putSellOrder()
         {
-            //putSellOrder();
+            eTradeDbEntities dbcontext = new eTradeDbEntities();
+            var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted });
+            int profileid = Convert.ToInt32(Session["profileid"].ToString());
+            try
+            {
+                using (scope)
+                {
+                    var userportfolio = (from p in dbcontext.Portfolios where p.Symbol == hdnFieldSymbol.Value && p.ProfileID == profileid && p.isActive == true select p).SingleOrDefault();
+                    SellOrder sellorder = new SellOrder();
+                    if (userportfolio == null)
+                    {
+                        InvalidExpressionException ex = new InvalidExpressionException();
+                        throw (ex);
+                    }
+                    else
+                    {
+                        userportfolio.TotalVolumes = userportfolio.TotalVolumes - Convert.ToDecimal(txtBuyVolume.Text.ToString());
+                        if (userportfolio.TotalVolumes == 0)
+                        {
+                            userportfolio.isActive = false;
+                            List<BuyOrder> buyorders = (from b in dbcontext.BuyOrders where b.PortfolioID == userportfolio.PortfolioID select b).ToList<BuyOrder>();
+                            List<SellOrder> sellorders = (from b in dbcontext.SellOrders where b.PortfolioID == userportfolio.PortfolioID select b).ToList<SellOrder>();
+                            userportfolio.Profit = (sellorders.Sum(i => i.UnitPrice * i.Volume)) + (Convert.ToDecimal(txtBuyPrice.Text) * Convert.ToDecimal(txtBuyVolume.Text)) - (buyorders.Sum(i => i.UnitPrice * i.Volume));
+                        }
+                        else if (userportfolio.TotalVolumes < 0)
+                        {
+                            throw new InvalidProgramException();
+                        }
+                        dbcontext.SaveChanges();
+                    }
+                    sellorder.DateofSell = Convert.ToDateTime(txtBuyDateofPurchase.Text);
+                    sellorder.UnitPrice = Convert.ToDecimal(txtBuyPrice.Text);
+                    sellorder.Volume = Convert.ToDecimal(txtBuyVolume.Text);
+                    sellorder.PortfolioID = userportfolio.PortfolioID;
+                    dbcontext.AddToSellOrders(sellorder);
+                    dbcontext.SaveChanges();
+                    scope.Complete();
+                    setControlVisibility();
+                }
+            }
+            catch (Exception ex)
+            {
+                scope.Dispose();
+            }
+            finally
+            {
+                if (dbcontext.Connection.State == ConnectionState.Open)
+                {
+                    //dbcontext.Connection.Close();
+                }
+            }
         }
-
-        //public void putSellOrder()
-        //{
-        //    eTradeDbEntities dbcontext = new eTradeDbEntities();
-        //    var scope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions() { IsolationLevel = System.Transactions.IsolationLevel.ReadUncommitted });
-        //    int profileid = Convert.ToInt32(Session["profileid"].ToString());
-        //    try
-        //    {
-        //        using (scope)
-        //        {
-        //            var userportfolio = (from p in dbcontext.Portfolios where p.Symbol == hdnFieldSymbol.Value && p.ProfileID == profileid && p.isActive == true select p).SingleOrDefault();
-        //            SellOrder sellorder = new SellOrder();
-        //            if (userportfolio == null)
-        //            {
-        //                InvalidExpressionException ex = new InvalidExpressionException();
-        //                throw (ex);
-        //            }
-        //            else
-        //            {
-
-        //                userportfolio.TotalVolumes = userportfolio.TotalVolumes - Convert.ToDecimal(txtSellVolume.Text.ToString());
-        //                if (userportfolio.TotalVolumes == 0)
-        //                {
-        //                    userportfolio.isActive = false;
-        //                    List<BuyOrder> buyorders = (from b in dbcontext.BuyOrders where b.PortfolioID == userportfolio.PortfolioID select b).ToList<BuyOrder>();
-        //                    List<SellOrder> sellorders = (from b in dbcontext.SellOrders where b.PortfolioID == userportfolio.PortfolioID select b).ToList<SellOrder>();
-        //                    userportfolio.Profit = (sellorders.Sum(i => i.UnitPrice * i.Volume)) + (Convert.ToDecimal(txtSellPrice.Text) * Convert.ToDecimal(txtSellVolume.Text)) - (buyorders.Sum(i => i.UnitPrice * i.Volume));
-        //                }
-        //                dbcontext.SaveChanges();
-        //            }
-        //            sellorder.DateofSell = Convert.ToDateTime(txtDateSell.Text);
-        //            sellorder.UnitPrice = Convert.ToDecimal(txtSellPrice.Text);
-        //            sellorder.Volume = Convert.ToDecimal(txtSellVolume.Text);
-        //            sellorder.PortfolioID = userportfolio.PortfolioID;
-        //            dbcontext.AddToSellOrders(sellorder);
-        //            dbcontext.SaveChanges();
-        //            scope.Complete();
-        //            setControlVisibility();
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        scope.Dispose();
-        //    }
-        //    finally
-        //    {
-        //        if (dbcontext.Connection.State == ConnectionState.Open)
-        //        {
-        //            dbcontext.Connection.Close();
-        //        }
-        //    }
-        //}
 
         public void setControlVisibility()
         {
@@ -283,7 +288,6 @@ namespace eTrade
             Panel1.Visible = false;
             Panel2.Visible = false;
             BuyPanel.Visible = false;
-            //SellPanel.Visible = false;
             gvGetSymbol.DataSource = null;
             gvGetSymbol.DataBind();
             pm = new PortfolioManager();
@@ -300,39 +304,12 @@ namespace eTrade
                 List<PortfolioManager> upm = ViewState["upm"] as List<PortfolioManager>;
                 string arg = e.CommandArgument.ToString();
                 string [] slist = arg.Split(',');
+                hdnFieldSymbol.Value = slist[0];
+                txtBuyStock.Text = slist[0];
                 MyAccordion.DataSource = upm.Where(i => i.portfolioID == Convert.ToInt64(slist[2]) && i.symbol == slist[0]);
                 MyAccordion.DataBind();
                 upWatchListouter.Update();
             }
         }
-
-        protected void ddlAction_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (ddlAction.SelectedValue == "No Selection")
-            {
-                btnBuyStock.Text = "Action";
-                txtBuyVolume.Enabled = false;
-                txtBuyPrice.Enabled = false;
-                txtBuyDateofPurchase.Enabled = false;
-                btnBuyStock.Enabled = false;
-            }
-            else if (ddlAction.SelectedValue == "Buy")
-            {
-                btnBuyStock.Text = "Buy";
-                txtBuyVolume.Enabled = true;
-                txtBuyPrice.Enabled = true;
-                txtBuyDateofPurchase.Enabled = true;
-                btnBuyStock.Enabled = true;
-            }
-            else if (ddlAction.SelectedValue == "Sell")
-            {
-                btnBuyStock.Text = "Sell";
-                txtBuyVolume.Enabled = true;
-                txtBuyPrice.Enabled = true;
-                txtBuyDateofPurchase.Enabled = true;
-                btnBuyStock.Enabled = true;
-            }
-        }
-
     }
 }

@@ -79,8 +79,31 @@
                     break;
             }
         }
+
+
+
+        function ddlAction_SelectedIndexChanged() {
+            var DropdownList = document.getElementById('<%=ddlAction.ClientID %>');
+            var SelectedValue = DropdownList.value;
+            if (SelectedValue == "Purchase" || SelectedValue == "Sell") {
+                document.getElementById('<%= txtBuyVolume.ClientID %>').disabled = false;
+                document.getElementById('<%= txtBuyPrice.ClientID %>').disabled = false;
+                document.getElementById('<%= txtBuyDateofPurchase.ClientID %>').disabled = false;
+                document.getElementById('<%= btnBuyStock.ClientID %>').disabled = false;
+                var btnBuyStock = document.getElementById('<%=btnBuyStock.ClientID %>');
+                btnBuyStock.setAttribute("Text", SelectedValue);
+            }
+            else {
+                document.getElementById('<%= txtBuyVolume.ClientID %>').disabled = true;
+                document.getElementById('<%= txtBuyPrice.ClientID %>').disabled = true;
+                document.getElementById('<%= txtBuyDateofPurchase.ClientID %>').disabled = true;
+                document.getElementById('<%= btnBuyStock.ClientID %>').disabled = true;
+                document.getElementById('<%= btnBuyStock.ClientID %>').value = "Action";
+            }
+        }
     </script>
 </asp:Content>
+
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
     <ajaxToolkit:ToolkitScriptManager ID="ToolkitScriptManager1" runat="server">
     </ajaxToolkit:ToolkitScriptManager>
@@ -156,6 +179,8 @@
                     </td>
                 </tr>
                 <tr>
+                </tr>
+                <tr>
                     <td>
                         <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="width: 600px;
                             height: 370px;">
@@ -190,8 +215,7 @@
                                             Make a Selection
                                         </td>
                                         <td>
-                                            <asp:DropDownList ID="ddlAction" runat="server" ValidationGroup="Buy" 
-                                                onselectedindexchanged="ddlAction_SelectedIndexChanged">
+                                            <asp:DropDownList ID="ddlAction" runat="server" ValidationGroup="Buy" onchange="ddlAction_SelectedIndexChanged();">
                                                 <asp:ListItem>No Selection</asp:ListItem>
                                                 <asp:ListItem>Purchase</asp:ListItem>
                                                 <asp:ListItem>Sell</asp:ListItem>
@@ -211,7 +235,7 @@
                                             <asp:Label ID="lblBuyVolumes" runat="server" Text="Volumes"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyVolume" runat="server" Enabled=false></asp:TextBox>
+                                            <asp:TextBox ID="txtBuyVolume" runat="server" Enabled="false"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="rftxtBuyVolume" runat="server" ErrorMessage="*" ForeColor="Red"
                                                 ControlToValidate="txtBuyVolume" ValidationGroup="Buy"></asp:RequiredFieldValidator>
                                         </td>
@@ -221,7 +245,7 @@
                                             <asp:Label ID="lblBuyPrice" runat="server" Text="Price"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyPrice" runat="server" Enabled=false></asp:TextBox>
+                                            <asp:TextBox ID="txtBuyPrice" runat="server" Enabled="false"></asp:TextBox>
                                             <asp:RequiredFieldValidator ID="rftxtBuyPrice" runat="server" ErrorMessage="*" ForeColor="Red"
                                                 ControlToValidate="txtBuyPrice" ValidationGroup="Buy"></asp:RequiredFieldValidator>
                                         </td>
@@ -231,7 +255,7 @@
                                             <asp:Label ID="lblBuyDate" runat="server" Text="Purchase Date"></asp:Label>
                                         </td>
                                         <td>
-                                            <asp:TextBox ID="txtBuyDateofPurchase" runat="server" Enabled=false />
+                                            <asp:TextBox ID="txtBuyDateofPurchase" runat="server" Enabled="false" />
                                             <asp:Image ID="imgbuycalendar" runat="server" ImageUrl="~/Images/calendar_year.ico"
                                                 Height="100%" Width="23px" />
                                             <ajaxToolkit:CalendarExtender ID="calextbuy" runat="server" TargetControlID="txtBuyDateofPurchase"
@@ -246,7 +270,7 @@
                                         <tr>
                                             <td align="center">
                                                 <asp:Button ID="btnBuyStock" runat="server" OnClick="btnBuyStock_Click" Text="Action"
-                                                    ValidationGroup="Buy" Enabled=false />
+                                                    ValidationGroup="Buy" Enabled="false" />
                                             </td>
                                             <td align="center">
                                                 <asp:Button ID="btnBuyClose" runat="server" Text="Close" />
@@ -426,7 +450,7 @@
                                             <asp:BoundField DataField="DateofPurchase" HeaderText="DateofPurchase" ReadOnly="True" />
                                             <asp:TemplateField>
                                                 <FooterTemplate>
-                                                    <asp:Button ID="btnBuyStock" runat="server" Text="Purchase" />
+                                                    <asp:Button ID="btnBuyStock" runat="server" Text="Purchase/Sell" />
                                                     <ajaxToolkit:ModalPopupExtender ID="mpbuy" runat="server" PopupControlID="BuyPanel"
                                                         TargetControlID="btnBuyStock" CancelControlID="btnBuyClose" BackgroundCssClass="modalBackground">
                                                     </ajaxToolkit:ModalPopupExtender>

@@ -28,7 +28,7 @@
                             <asp:LoginName ID="HeadLoginName" runat="server" />
                         </span>! [
                         <asp:LoginStatus ID="HeadLoginStatus" runat="server" LogoutAction="Redirect" LogoutText="Log Out"
-                            LogoutPageUrl="~/" onloggingout="HeadLoginStatus_LoggingOut"  />
+                            LogoutPageUrl="~/" OnLoggingOut="HeadLoginStatus_LoggingOut" />
                         ]
                     </LoggedInTemplate>
                 </asp:LoginView>
@@ -38,16 +38,17 @@
                     IncludeStyleBlock="false" Orientation="Horizontal">
                     <Items>
                         <asp:MenuItem NavigateUrl="~/Default.aspx" Text="Home" />
-                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
                         <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Finance">
                             <asp:MenuItem NavigateUrl="~/UsersWatchList.aspx" Text="Watch List" />
                             <asp:MenuItem NavigateUrl="~/UserPortfolio.aspx" Text="Portfolio" />
-                             <asp:MenuItem NavigateUrl="~/CurrencyMarket.aspx" Text="Currency Market" />
+                            <asp:MenuItem NavigateUrl="~/CurrencyMarket.aspx" Text="Currency Market" />
                         </asp:MenuItem>
                         <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Account">
                             <asp:MenuItem NavigateUrl="~/Account/ChangePassword.aspx" Text="Change Password" />
                             <asp:MenuItem NavigateUrl="~/Profiles.aspx" Text="Profiles" />
                         </asp:MenuItem>
+                        <asp:MenuItem NavigateUrl="~/About.aspx" Text="About" />
+                        <asp:MenuItem NavigateUrl="~/Contact.aspx" Text="Contact" />
                     </Items>
                 </asp:Menu>
             </div>

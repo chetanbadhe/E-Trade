@@ -5,26 +5,11 @@
 </asp:Content>
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
     <h2>
-        About
+        About E!-Trade
     </h2>
     <p>
-        <ajaxToolkit:ToolkitScriptManager runat="server">
-        </ajaxToolkit:ToolkitScriptManager>
-        <asp:Button ID="btnShow" runat="server" Text="Show Modal Popup" />
-        <!-- ModalPopupExtender -->
-        <ajaxToolkit:ModalPopupExtender ID="mp1" runat="server" PopupControlID="Panel1" TargetControlID="btnShow"
-            CancelControlID="btnClose" BackgroundCssClass="modalBackground">
-        </ajaxToolkit:ModalPopupExtender>
-        <asp:Panel ID="Panel1" runat="server" CssClass="modalPopup" align="center" Style="display: none">
-            <div style="height: 100px">
-                Do you like this product?&nbsp;
-                <asp:DropDownList ID="DropDownList1" runat="server" AutoPostBack="true" OnSelectedIndexChanged="OnSelectedIndexChanged">
-                    <asp:ListItem Text="Please Select" Value="0"></asp:ListItem>
-                    <asp:ListItem Text="Yes" Value="1"></asp:ListItem>
-                    <asp:ListItem Text="No" Value="2"></asp:ListItem>
-                </asp:DropDownList>
-            </div>
-            <asp:Button ID="btnClose" runat="server" Text="Close" />
-        </asp:Panel>
+        I have started E!-Trade as new insight to new user to e-trading. User can learn about different stocks
+        and while doing so he can watch those stocks movement. User can check out stocks details and as well as charts.
+        User can create portfolio to learn about his earnings.
     </p>
 </asp:Content>

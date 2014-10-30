@@ -19,7 +19,6 @@ namespace eTrade
         {
             if (!IsPostBack)
             {
-                
                 CurrencyConvertorWS.Currency cs = new CurrencyConvertorWS.Currency();
                 Array arr;
                 arr = Enum.GetValues(cs.GetType());

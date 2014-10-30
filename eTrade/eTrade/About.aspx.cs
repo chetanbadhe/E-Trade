@@ -13,17 +13,5 @@ namespace eTrade
         {
            
         }
-
-        protected void btnShow_Click(object sender, EventArgs e)
-        {
-            mp1.Show();
-        }
-
-        protected void OnSelectedIndexChanged(object sender, EventArgs e)
-        {
-            //Do work
-
-            mp1.Show();
-        }
     }
 }

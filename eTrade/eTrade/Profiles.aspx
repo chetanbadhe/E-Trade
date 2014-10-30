@@ -4,19 +4,34 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <table>
+    <table width="75%">
         <tr>
             <td>
-                <asp:GridView ID="gvGetProfiles" runat="server" AutoGenerateColumns="True" DataKeyNames="ProfileID"
+                <asp:Label ID="lblProfiledefault" runat="server" Text="Set default profile"></asp:Label>
+            </td>
+            <td>
+                <asp:DropDownList ID="ddlprofiles" runat="server" DataValueField="ProfileID" DataTextField="ProfileName">
+                </asp:DropDownList>
+            </td>
+            <td>
+                <asp:Button ID="btnSetDefault" runat="server" Text="Set" OnClick="btnSetDefault_Click" />
+            </td>
+        </tr>
+        <tr>
+            <h3>
+                User Profiles
+            </h3>
+        </tr>
+        <tr>
+            <td colspan="3">
+                <asp:GridView ID="gvGetProfiles" runat="server" AutoGenerateColumns="False" DataKeyNames="ProfileID"
                     ViewStateMode="Enabled" CellPadding="4" Width="100%" ForeColor="#333333" AllowPaging="True"
                     DataSourceID="EDSProfiles">
                     <AlternatingRowStyle BackColor="White" ForeColor="#284775" />
                     <Columns>
-                        <asp:CommandField ShowSelectButton="True" ShowEditButton="True" />
-                        <%-- <asp:BoundField DataField="ProfileID" HeaderText="ProfileID" ReadOnly="True" SortExpression="ProfileID" />
-                        <asp:BoundField DataField="UserID" HeaderText="UserID" SortExpression="UserID" />
                         <asp:BoundField DataField="ProfileName" HeaderText="ProfileName" SortExpression="ProfileName" />
-                        <asp:CheckBoxField DataField="isDefault" HeaderText="isDefault" SortExpression="isDefault" />--%>
+                        <asp:BoundField DataField="isDefault" HeaderText="Default" SortExpression="ProfileName"
+                            ReadOnly="true" />
                     </Columns>
                     <EditRowStyle BackColor="#999999" />
                     <FooterStyle BackColor="#5D7B9D" ForeColor="White" Font-Bold="True" />
@@ -31,7 +46,7 @@
                 </asp:GridView>
                 <asp:EntityDataSource ID="EDSProfiles" runat="server" ConnectionString="name=eTradeDbEntities"
                     DefaultContainerName="eTradeDbEntities" EnableFlattening="False" EnableUpdate="True"
-                    EntitySetName="Profiles" EntityTypeFilter="Profile">
+                    AutoGenerateWhereClause="true" EntitySetName="Profiles" EntityTypeFilter="Profile">
                 </asp:EntityDataSource>
             </td>
         </tr>

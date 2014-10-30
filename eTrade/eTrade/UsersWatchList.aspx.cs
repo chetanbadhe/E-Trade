@@ -14,7 +14,6 @@ namespace eTrade
 {
     public partial class UsersWatchList : System.Web.UI.Page
     {
-        //static CommonFunctionality _userinfo;
         Quotes searchquote;
         List<Quotes> lstWatchQuotes;
         List<Quotes> lstQuotes = new List<Quotes>();
@@ -27,7 +26,6 @@ namespace eTrade
                 {
                     Panel1.Visible = false;
                     Panel2.Visible = false;
-                    //_userinfo = new CommonFunctionality();
                     gvGetSymbol.DataSource = lstQuotes;
                     gvGetSymbol.DataBind();
                     BindWatchList();
@@ -50,6 +48,7 @@ namespace eTrade
         {
             hdnFieldSymbol.Value = symbol;
             searchquote = getObject(symbol);
+            Session["searchquote"] = searchquote;
             lstQuotes = new List<Quotes>();
             lstQuotes.Add(searchquote);
             gvGetSymbol.DataSource = lstQuotes;
@@ -175,7 +174,8 @@ namespace eTrade
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
             long profid = Convert.ToInt64(Session["profileid"].ToString());
-            var isexist = (from s in dbcontext.WatchLists where s.ProfileID == profid && s.Symbol == searchquote.Symbol select s).SingleOrDefault();
+            Quotes squotes = (Quotes)Session["searchquote"];
+            var isexist = (from s in dbcontext.WatchLists where s.ProfileID == profid && s.Symbol == squotes.Symbol select s).SingleOrDefault();
             if (isexist == null)
             {
                 WatchList watchlist = new WatchList();
@@ -224,7 +224,8 @@ namespace eTrade
         protected void btnDelete_Click(object sender, EventArgs e)
         {
             eTradeDbEntities dbcontext = new eTradeDbEntities();
-            WatchList wsymbol = dbcontext.WatchLists.First(w => w.Symbol == hdnFieldSymbol.Value && w.ProfileID == Convert.ToInt64(Session["profileid"]));
+            long profid = Convert.ToInt64(Session["profileid"].ToString());
+            WatchList wsymbol = dbcontext.WatchLists.First(w => w.Symbol == hdnFieldSymbol.Value && w.ProfileID == profid);
             wsymbol.isActive = false;
             dbcontext.SaveChanges();
             Panel1.Visible = false;
